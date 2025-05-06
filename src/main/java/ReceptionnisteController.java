@@ -4,6 +4,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
 
 import java.sql.*;
 
@@ -131,6 +136,8 @@ public class ReceptionnisteController {
         passwordField.clear();
     }
 
+
+
     @FXML private TextField searchField;
     @FXML
     public void rechercherPatient() {
@@ -172,8 +179,17 @@ public class ReceptionnisteController {
 
 
 
+
+
     private void showAlert(String msg) {
         Alert alert = new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK);
         alert.showAndWait();
     }
+
+    @FXML
+    public void retourAuMenu() {
+        Main.switchScene("/AccueilReceptionniste.fxml");
+    }
+
+
 }

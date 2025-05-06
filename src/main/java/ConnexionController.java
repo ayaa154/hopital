@@ -32,17 +32,11 @@ public class ConnexionController {
 
                 switch (role.toLowerCase()) {
                     case "receptionniste":
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("AccueilReceptionniste.fxml"));
-                        Parent root = loader.load();
-                        Stage stage = new Stage();
-                        stage.setScene(new Scene(root));
-                        stage.setTitle("Accueil Réceptionniste");
-                        stage.show();
-                        // Fermer la fenêtre actuelle
-                        Stage currentStage = (Stage) emailField.getScene().getWindow();
-                        currentStage.close();
+                        Main.switchScene("/AccueilReceptionniste.fxml"); // ✅ remplace la scène dans la même fenêtre
                         break;
-                    // Autres rôles si besoin...
+                    case "patient":
+                        // Par exemple : Main.switchScene("/ProfilPatient.fxml");
+                        break;
                     default:
                         showAlert("Rôle non pris en charge.");
                         break;
@@ -59,6 +53,7 @@ public class ConnexionController {
             showAlert("Erreur de connexion !");
         }
     }
+
 
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK);
