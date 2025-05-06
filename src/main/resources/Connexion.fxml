@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="ConnexionController" prefWidth="400" prefHeight="300">
+    <children>
+        <VBox spacing="15" alignment="CENTER" layoutX="50" layoutY="40" prefWidth="300">
+            <Label text="Connexion" style="-fx-font-size: 18px;"/>
+            <TextField fx:id="emailField" promptText="Email"/>
+            <PasswordField fx:id="passwordField" promptText="Mot de passe"/>
+            <Button text="Connexion" onAction="#verifierConnexion"/>
+        </VBox>
+    </children>
+</AnchorPane>
