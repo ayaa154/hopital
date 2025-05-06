@@ -3,6 +3,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
+import java.security.MessageDigest;
 
 public class AdminUserManagement extends JFrame {
 
@@ -55,7 +56,7 @@ public class AdminUserManagement extends JFrame {
     private void connectToDatabase() {
         String url = "jdbc:mysql://localhost:3306/hopital";  // Remplacez par l'URL de votre base de données
         String user = "root";  // Remplacez par votre nom d'utilisateur MySQL
-        String password = "a!y!a!boutahli12";  // Remplacez par votre mot de passe MySQL
+        String password = "Meryemechiguerr";  // Remplacez par votre mot de passe MySQL
 
         try {
             // Chargement du driver MySQL (pour les versions anciennes de Java)
@@ -92,6 +93,21 @@ public class AdminUserManagement extends JFrame {
             showError("Erreur chargement: " + e.getMessage());
         }
     }
+    private String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hashedBytes = md.digest(password.getBytes("UTF-8"));
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashedBytes) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (Exception e) {
+            showError("Erreur de hachage du mot de passe : " + e.getMessage());
+            return null;
+        }
+    }
+
 
     private void showUserDialog(boolean editMode) {
         int selectedRow = table.getSelectedRow();
@@ -144,19 +160,44 @@ public class AdminUserManagement extends JFrame {
                     stmt.setString(4, role);
                     int index = 5;
                     if (!password.isEmpty()) {
-                        stmt.setString(index++, password);
+                        stmt.setString(index++, hashPassword(password));
                     }
                     stmt.setInt(index, id);
                     stmt.executeUpdate();
                 } else {
+                    // Ajouter l'utilisateur à la table utilisateurs
                     PreparedStatement stmt = connection.prepareStatement(
                             "INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, role) VALUES (?, ?, ?, ?, ?)");
                     stmt.setString(1, nom);
                     stmt.setString(2, prenom);
                     stmt.setString(3, email);
-                    stmt.setString(4, password);
+                    stmt.setString(4, hashPassword(password));
                     stmt.setString(5, role);
                     stmt.executeUpdate();
+
+                    // Récupérer l'ID de l'utilisateur nouvellement ajouté
+                    Statement stmtId = connection.createStatement();
+                    ResultSet rs = stmtId.executeQuery("SELECT LAST_INSERT_ID()");
+                    if (rs.next()) {
+                        int newUserId = rs.getInt(1);
+
+                        // Si le rôle est patient, ajouter dans la table patients
+                        if (role.equals("patient")) {
+                            PreparedStatement patientStmt = connection.prepareStatement(
+                                    "INSERT INTO patients (id, antecedents) VALUES (?, ?)");
+                            patientStmt.setInt(1, newUserId);
+                            patientStmt.setString(2, ""); // Valeur vide pour les antécédents, à modifier selon l'entrée
+                            patientStmt.executeUpdate();
+                        }
+                        // Si le rôle est médecin, ajouter dans la table medecins
+                        else if (role.equals("medecin")) {
+                            PreparedStatement medecinStmt = connection.prepareStatement(
+                                    "INSERT INTO medecins (id, specialite) VALUES (?, ?)");
+                            medecinStmt.setInt(1, newUserId);
+                            medecinStmt.setString(2, ""); // Valeur vide pour la spécialité, à modifier selon l'entrée
+                            medecinStmt.executeUpdate();
+                        }
+                    }
                 }
                 loadUsers();
             } catch (SQLException ex) {

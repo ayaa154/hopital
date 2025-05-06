@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
 
+
 public class ConnexionHopital extends JFrame {
 
     private JTextField emailField;
@@ -47,7 +48,7 @@ public class ConnexionHopital extends JFrame {
 
         try {
             // Connexion à la base MySQL
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/hopital", "root", "a!y!a!boutahli12");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/hopital", "root", "Meryemechiguerr");
             PreparedStatement stmt = conn.prepareStatement(
                     "SELECT * FROM utilisateurs WHERE email = ? AND mot_de_passe = SHA2(?, 256)"
             );

@@ -10,6 +10,9 @@ public class ProfilPatient extends JFrame {
     private Connection connection;
     private int patientId;
 
+    // Ajout d'un panel de menu vertical
+    private JPanel menuPanel;
+
     public ProfilPatient(int patientId) {
         this.patientId = patientId;
         initializeUI();
@@ -19,10 +22,33 @@ public class ProfilPatient extends JFrame {
 
     private void initializeUI() {
         setTitle("Profil Patient");
-        setSize(600, 600);
+        setSize(800, 600);  // Augmenter la taille de la fenêtre pour accueillir le menu
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
+        // Panel de menu vertical
+        menuPanel = new JPanel();
+        menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
+        menuPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        menuPanel.setBackground(Color.LIGHT_GRAY);
+
+        // Ajouter les éléments du menu
+        JButton btnProfilPatient = new JButton("Profil Patient");
+        btnProfilPatient.addActionListener(e -> JOptionPane.showMessageDialog(this, "Profil Patient"));
+        menuPanel.add(btnProfilPatient);
+
+        JButton btnMesRendezVous = new JButton("Mes Rendez-vous");
+        btnMesRendezVous.addActionListener(e -> JOptionPane.showMessageDialog(this, "Mes Rendez-vous"));
+        menuPanel.add(btnMesRendezVous);
+
+        JButton btnDossierMedical = new JButton("Dossier Médical");
+        btnDossierMedical.addActionListener(e -> JOptionPane.showMessageDialog(this, "Dossier Médical"));
+        menuPanel.add(btnDossierMedical);
+
+        // Ajout du menu à la fenêtre principale
+        add(menuPanel, BorderLayout.WEST);
+
+        // Panel principal pour les informations du patient
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -73,7 +99,7 @@ public class ProfilPatient extends JFrame {
         buttonPanel.add(btnClose);
 
         panel.add(buttonPanel);
-        add(panel);
+        add(panel, BorderLayout.CENTER);
     }
 
     private void connectToDatabase() {
@@ -81,7 +107,7 @@ public class ProfilPatient extends JFrame {
             connection = DriverManager.getConnection(
                     "jdbc:mysql://localhost/hopital",
                     "root",
-                    "a!y!a!boutahli12");
+                    "Meryemechiguerr");
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this,
                     "Erreur de connexion à la base de données: " + e.getMessage());
@@ -92,7 +118,8 @@ public class ProfilPatient extends JFrame {
     private void loadPatientInfo() {
         String query = "SELECT u.nom, u.prenom, u.email, u.telephone, u.adresse, p.antecedents " +
                 "FROM utilisateurs u " +
-                "JOIN patients p ON u.id = p.id WHERE u.id = ?";  // Changé p.user_id en p.id
+                "JOIN patients p ON u.id = p.id " +
+                "WHERE u.id = ?";  // Recherche par ID d'utilisateur
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, patientId);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -109,8 +136,7 @@ public class ProfilPatient extends JFrame {
                 }
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this,
-                    "Erreur lors du chargement: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Erreur lors du chargement: " + e.getMessage());
         }
     }
 
