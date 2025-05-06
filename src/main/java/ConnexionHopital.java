@@ -1,8 +1,10 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.*;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
+<<<<<<< HEAD
 
 public class ConnexionHopital extends JFrame {
 
@@ -45,8 +47,14 @@ public class ConnexionHopital extends JFrame {
     private void verifierConnexion() {
         String email = emailField.getText();
         String password = new String(passwordField.getPassword());
+=======
+public class ConnexionHopital extends Application {
+>>>>>>> 4e2887cf27a69e1c9b2b01e71ef268bf36467db4
 
+    @Override
+    public void start(Stage primaryStage) {
         try {
+<<<<<<< HEAD
             // Connexion à la base MySQL
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/hopital", "root", "Meryemechiguerr");
             PreparedStatement stmt = conn.prepareStatement(
@@ -90,20 +98,19 @@ public class ConnexionHopital extends JFrame {
             stmt.close();
             conn.close();
         } catch (SQLException e) {
+=======
+            Parent root = FXMLLoader.load(getClass().getResource("Connexion.fxml"));
+            Scene scene = new Scene(root);
+            primaryStage.setScene(scene);
+            primaryStage.setTitle("Connexion - Gestion d'Hôpital");
+            primaryStage.show();
+        } catch (Exception e) {
+>>>>>>> 4e2887cf27a69e1c9b2b01e71ef268bf36467db4
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Erreur de connexion à la base !");
         }
     }
 
     public static void main(String[] args) {
-        // Charger le driver JDBC
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Driver JDBC non trouvé !");
-            return;
-        }
-
-        SwingUtilities.invokeLater(() -> new ConnexionHopital());
+        launch(args);
     }
 }

@@ -161,6 +161,10 @@ public class AdminUserManagement extends JFrame {
                     int index = 5;
                     if (!password.isEmpty()) {
                         stmt.setString(index++, hashPassword(password));
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4e2887cf27a69e1c9b2b01e71ef268bf36467db4
                     }
                     stmt.setInt(index, id);
                     stmt.executeUpdate();
@@ -172,6 +176,10 @@ public class AdminUserManagement extends JFrame {
                     stmt.setString(2, prenom);
                     stmt.setString(3, email);
                     stmt.setString(4, hashPassword(password));
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4e2887cf27a69e1c9b2b01e71ef268bf36467db4
                     stmt.setString(5, role);
                     stmt.executeUpdate();
 
