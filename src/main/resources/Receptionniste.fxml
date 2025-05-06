@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="ReceptionnisteController">
+
+    <top>
+        <Label text="👩‍💼 Gestion des Patients - Réceptionniste"
+               style="-fx-font-size: 20px; -fx-padding: 10; -fx-font-weight: bold;"
+               BorderPane.alignment="CENTER"/>
+    </top>
+
+
+
+
+    <center>
+
+
+        <VBox spacing="10" style="-fx-padding: 10;">
+            <HBox spacing="10" alignment="CENTER">
+                <TextField fx:id="searchField" promptText="Rechercher par nom ou ID..." />
+                <Button text="🔍 Rechercher" onAction="#rechercherPatient" />
+                <Button text="🔁 Réinitialiser" onAction="#rafraichirListe" />
+            </HBox>
+
+            <TableView fx:id="patientTable" prefHeight="300" prefWidth="600">
+                <columns>
+                    <TableColumn fx:id="idCol" text="ID" prefWidth="50"/>
+                    <TableColumn fx:id="nomCol" text="Nom" prefWidth="150"/>
+                    <TableColumn fx:id="prenomCol" text="Prénom" prefWidth="150"/>
+                    <TableColumn fx:id="emailCol" text="Email" prefWidth="200"/>
+                </columns>
+            </TableView>
+
+            <!-- 📌 Formulaire caché au départ -->
+            <VBox fx:id="formulaireAjout" visible="false" managed="false" spacing="10" alignment="CENTER">
+                <TextField fx:id="nomField" promptText="Nom"/>
+                <TextField fx:id="prenomField" promptText="Prénom"/>
+                <TextField fx:id="emailField" promptText="Email"/>
+                <PasswordField fx:id="passwordField" promptText="Mot de passe"/>
+
+                <HBox spacing="10">
+                    <Button text="Confirmer" onAction="#confirmerAjoutPatient"/>
+                    <Button text="Retour" onAction="#annulerAjoutPatient"/>
+                </HBox>
+            </VBox>
+
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox spacing="10.0" alignment="CENTER">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <Button text="Ajouter Patient" onAction="#ajouterPatient"/>
+            <Button text="Supprimer Patient" onAction="#supprimerPatient"/>
+            <Button text="Rafraîchir" onAction="#rafraichirListe"/>
+
+        </HBox>
+    </bottom>
+
+
+</BorderPane>
