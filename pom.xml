@@ -4,18 +4,18 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>ProjetHospital</artifactId>
+    <artifactId>hopital</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <javafx.version>20.0.2</javafx.version> <!-- ou une version stable -->
+        <javafx.version>20.0.2</javafx.version> <!-- Version stable de JavaFX -->
     </properties>
 
     <dependencies>
-        <!-- JavaFX Dependencies -->
+        <!-- Dépendances JavaFX -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -31,28 +31,29 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.33</version>
+            <version>8.0.33</version> <!-- Dernière version stable à la date actuelle -->
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <!-- Plugin Maven pour JavaFX -->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>Main</mainClass> <!-- Remplace par ta vraie classe principale -->
+                    <mainClass>org.example.hopital.ConnexionHopital</mainClass> <!-- Classe contenant la méthode main -->
                 </configuration>
             </plugin>
         </plugins>
     </build>
 
-    <!-- Ce repository est important si Maven n'arrive pas à trouver JavaFX -->
     <repositories>
         <repository>
             <id>openjfx</id>
             <url>https://repo.maven.apache.org/maven2</url>
         </repository>
     </repositories>
+
 </project>

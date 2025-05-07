@@ -1,7 +1,16 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.sql.*;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+
 
 public class ConnexionHopital extends JFrame {
 
@@ -42,57 +51,70 @@ public class ConnexionHopital extends JFrame {
     }
 
     private void verifierConnexion() {
-        String email = emailField.getText();
-        String password = new String(passwordField.getPassword());
+        String email = emailField.getText().trim();
+        String password = new String(passwordField.getPassword()).trim();
 
-        try {
-            // Connexion à la base MySQL
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/hopital", "root", "a!y!a!boutahli12");
+        // Utiliser try-with-resources pour une gestion correcte des ressources
+        try (Connection conn = DriverManager.getConnection(
+                "jdbc:mysql://localhost/hopital?useSSL=false&serverTimezone=UTC",
+                "root",
+                "ayabell2003&")) {
+
             PreparedStatement stmt = conn.prepareStatement(
                     "SELECT * FROM utilisateurs WHERE email = ? AND mot_de_passe = SHA2(?, 256)"
             );
             stmt.setString(1, email);
             stmt.setString(2, password);
-            ResultSet rs = stmt.executeQuery();
 
-            if (rs.next()) {
-                String role = rs.getString("role");
-                int userId = rs.getInt("id"); // 🔹 Cette ligne récupère l'id du patient
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    String role = rs.getString("role");
+                    int userId = rs.getInt("id");
 
-                JOptionPane.showMessageDialog(this, "Connexion réussie ! Rôle : " + role);
-                dispose(); // ferme la fenêtre actuelle
+                    // Enregistrer l'ID du médecin dans la session
+                    if (role.equalsIgnoreCase("medecin")) {
+                        Session.setMedecinId(userId);
+                    }
 
-                switch (role.toLowerCase()) {
-                    case "admin":
-                        new AdminUserManagement().setVisible(true);
-                        break;
-                    case "medecin":
-                        JOptionPane.showMessageDialog(null, "Redirection vers l'interface médecin (non encore implémentée)");
-                        break;
-                    case "receptionniste":
-                        ReceptionnisteApp.lancer();
-                        break;
+                    JOptionPane.showMessageDialog(this, "Connexion réussie ! Rôle : " + role);
+                    dispose(); // Ferme la fenêtre de connexion
 
-                    case "patient":
-                        new ProfilPatient(userId).setVisible(true); // Affiche le profil du patient connecté
-                        break;
-                    default:
-                        JOptionPane.showMessageDialog(null, "Rôle inconnu !");
-                        break;
+                    // Rediriger l'utilisateur vers la bonne interface
+                    switch (role.toLowerCase()) {
+                        case "admin":
+                            new AdminUserManagement().setVisible(true);
+                            break;
+                        case "medecin":
+                            dispose(); // Ferme la fenêtre Swing
+                            MedecinApp.lancer(userId); // Démarre JavaFX proprement
+                            break;
+
+
+
+                        case "receptionniste":
+                            JOptionPane.showMessageDialog(null, "Interface réceptionniste (à implémenter)");
+                            break;
+                        case "patient":
+                            new ProfilPatient(userId).setVisible(true);
+                            break;
+                        default:
+                            JOptionPane.showMessageDialog(null, "Rôle inconnu !");
+                            break;
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this,
+                            "Identifiants incorrects ou utilisateur inexistant.\n" +
+                                    "Veuillez vérifier votre email et mot de passe.");
                 }
             }
- else {
-                JOptionPane.showMessageDialog(this, "Email ou mot de passe incorrect !");
-            }
 
-            rs.close();
-            stmt.close();
-            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Erreur de connexion à la base !");
+            JOptionPane.showMessageDialog(this,
+                    "Erreur technique lors de la connexion :\n" + e.getMessage());
         }
     }
+
 
     public static void main(String[] args) {
         // Charger le driver JDBC

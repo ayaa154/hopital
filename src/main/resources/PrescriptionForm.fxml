@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="PrescriptionFormController"
+      spacing="10" alignment="CENTER" style="-fx-padding: 20;">
+
+    <Label text="📝 Écrire une Prescription" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+    <Label text="Médicament :" />
+    <TextField fx:id="medicamentField" promptText="Nom du médicament" />
+
+    <Label text="Posologie :" />
+    <TextArea fx:id="posologieField" promptText="Ex : 1 comprimé matin et soir" prefRowCount="3" />
+
+    <Label text="Durée :" />
+    <TextField fx:id="dureeField" promptText="Ex : 7 jours" />
+
+    <Button text="Enregistrer" onAction="#enregistrerPrescription" />
+</VBox>

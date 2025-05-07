@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="MedecinDashboardController">
+
+    <top>
+        <VBox spacing="10" alignment="CENTER" style="-fx-padding: 20;">
+            <!-- Titre principal avec emoji -->
+            <Label text="🗓️ Voici les rendez-vous de cette semaine :"
+                   style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+
+            <!-- Message de bienvenue -->
+            <Label fx:id="welcomeLabel"
+                   style="-fx-font-size: 16px;" />
+
+            <!-- Bouton pour rafraîchir -->
+            <Button text="Rafraîchir" onAction="#rafraichirRendezvous" />
+        </VBox>
+    </top>
+
+    <center>
+        <VBox spacing="10" alignment="CENTER" style="-fx-padding: 20;">
+            <!-- Table des rendez-vous -->
+            <TableView fx:id="rendezvousTable">
+                <columns>
+                    <TableColumn fx:id="colPrenom" text="Prénom du patient" prefWidth="150"/>
+                    <TableColumn fx:id="colNom" text="Nom du patient" prefWidth="150"/>
+                    <TableColumn fx:id="colDateHeure" text="Date et Heure" prefWidth="200"/>
+                    <TableColumn fx:id="colMotif" text="Motif" prefWidth="200"/>
+                </columns>
+            </TableView>
+
+            <!-- Bouton pour ajouter une prescription -->
+            <Button text="Ajouter Prescription" onAction="#ouvrirFenetrePrescription" />
+        </VBox>
+    </center>
+</BorderPane>
