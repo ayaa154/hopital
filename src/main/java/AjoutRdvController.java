@@ -3,6 +3,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.sql.Connection;
@@ -11,6 +12,9 @@ import java.sql.PreparedStatement;
 import java.time.LocalDate;
 
 public class AjoutRdvController {
+
+    @FXML
+    private BorderPane ajoutPane;
 
     @FXML private TextField patientIdField;
     @FXML private TextField medecinIdField;
@@ -77,22 +81,13 @@ public class AjoutRdvController {
 
     @FXML
     public void retour() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/RendezVous.fxml"));
-            Parent rdvView = loader.load();
-
-            RendezVousController controller = loader.getController();
-
-            // Trouver la fenêtre courante et remplacer le contenu
-            Stage stage = (Stage) patientIdField.getScene().getWindow();
-            Scene scene = new Scene(rdvView);
-            stage.setScene(scene);
-            stage.setTitle("Gestion des Rendez-vous");
-        } catch (Exception e) {
-            e.printStackTrace();
-            showAlert("Erreur lors du retour.");
+        if (rendezVousController != null) {
+            rendezVousController.revenirVuePrincipale();
+        } else {
+            showAlert("Erreur : contrôleur principal non défini.");
         }
     }
+
 
 
     private void showAlert(String message) {

@@ -8,6 +8,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.animation.PauseTransition;
+import javafx.util.Duration;
 
 import java.sql.*;
 
@@ -15,18 +17,16 @@ public class RendezVousController {
 
     @FXML
     private TableView<RendezVous> tableRdv;
-    @FXML
-    private TableColumn<RendezVous, Integer> idCol;
-    @FXML
-    private TableColumn<RendezVous, String> patientCol;
-    @FXML
-    private TableColumn<RendezVous, String> medecinCol;
-    @FXML
-    private TableColumn<RendezVous, String> dateCol;
-    @FXML
-    private TableColumn<RendezVous, String> motifCol;
-    @FXML
-    private TableColumn<RendezVous, String> statutCol;
+    @FXML private TableColumn<RendezVous, Integer> idCol;
+    @FXML private TableColumn<RendezVous, String> patientCol;
+    @FXML private TableColumn<RendezVous, String> medecinCol;
+    @FXML private TableColumn<RendezVous, String> dateCol;
+    @FXML private TableColumn<RendezVous, String> motifCol;
+    @FXML private TableColumn<RendezVous, String> statutCol;
+    @FXML private BorderPane rootPane;
+    @FXML private Label messageLabel;
+    @FXML private TextField searchField;
+
 
     @FXML
     public void initialize() {
@@ -36,25 +36,23 @@ public class RendezVousController {
         dateCol.setCellValueFactory(new PropertyValueFactory<>("dateHeure"));
         motifCol.setCellValueFactory(new PropertyValueFactory<>("motif"));
         statutCol.setCellValueFactory(new PropertyValueFactory<>("statut"));
-
         chargerDonneesRdv();
     }
 
     private void chargerDonneesRdv() {
         ObservableList<RendezVous> liste = FXCollections.observableArrayList();
-
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/hopital", "root", "a!y!a!boutahli12");
              Statement stmt = conn.createStatement()) {
 
             String sql = """
-                    SELECT rv.id, 
-                           CONCAT(p.nom, ' ', p.prenom) AS patient,
-                           CONCAT(m.nom, ' ', m.prenom) AS medecin,
-                           rv.date_heure, rv.motif, rv.statut
-                    FROM rendez_vous rv
-                    JOIN utilisateurs p ON rv.patient_id = p.id
-                    JOIN utilisateurs m ON rv.medecin_id = m.id
-                    """;
+                SELECT rv.id, 
+                       CONCAT(p.nom, ' ', p.prenom) AS patient,
+                       CONCAT(m.nom, ' ', m.prenom) AS medecin,
+                       rv.date_heure, rv.motif, rv.statut
+                FROM rendez_vous rv
+                JOIN utilisateurs p ON rv.patient_id = p.id
+                JOIN utilisateurs m ON rv.medecin_id = m.id
+                """;
 
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
@@ -70,13 +68,9 @@ public class RendezVousController {
 
             tableRdv.setItems(liste);
         } catch (SQLException e) {
-            e.printStackTrace();
+            afficherMessage("❌ Erreur lors du chargement des rendez-vous.", true);
         }
     }
-
-    @FXML
-    private BorderPane rootPane;
-
 
     @FXML
     public void retourMenu() {
@@ -86,7 +80,7 @@ public class RendezVousController {
             Stage stage = (Stage) tableRdv.getScene().getWindow();
             stage.setScene(new Scene(root));
         } catch (Exception e) {
-            e.printStackTrace();
+            afficherMessage("❌ Erreur lors du retour au menu.", true);
         }
     }
 
@@ -99,12 +93,18 @@ public class RendezVousController {
             AjoutRdvController controller = loader.getController();
             controller.setRendezVousController(this);
 
-            rootPane.setTop(null); // masque la ToolBar "Retour au menu"
+            // 👉 Vider tout sauf le center
+            rootPane.setTop(null);
+            rootPane.setLeft(null);
+            rootPane.setRight(null);
+            rootPane.setBottom(null);
+
             rootPane.setCenter(formAjout);
         } catch (Exception e) {
-            e.printStackTrace();
+            afficherMessage("❌ Erreur ouverture formulaire ajout.", true);
         }
     }
+
 
     @FXML
     public void ouvrirFormulaireModification() {
@@ -117,16 +117,13 @@ public class RendezVousController {
 
             rootPane.setCenter(modificationForm);
         } catch (Exception e) {
-            e.printStackTrace();
+            afficherMessage("❌ Erreur ouverture formulaire modification.", true);
         }
     }
 
-
-
     @FXML
     public void modifierRdv() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Modification de RDV à implémenter", ButtonType.OK);
-        alert.showAndWait();
+        afficherMessage("ℹ️ Modification de RDV à implémenter.", false);
     }
 
     @FXML
@@ -134,49 +131,103 @@ public class RendezVousController {
         RendezVous selection = tableRdv.getSelectionModel().getSelectedItem();
 
         if (selection == null) {
-            Alert alert = new Alert(Alert.AlertType.WARNING, "Veuillez sélectionner un rendez-vous à annuler.", ButtonType.OK);
-            alert.showAndWait();
+            afficherMessage("⚠️ Sélectionnez un rendez-vous à annuler.", true);
             return;
         }
 
-        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION,
-                "Voulez-vous vraiment annuler ce rendez-vous ?",
-                ButtonType.YES, ButtonType.NO);
-        confirmation.setTitle("Confirmation d'annulation");
-        confirmation.showAndWait();
-
-        if (confirmation.getResult() == ButtonType.YES) {
-            try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/hopital", "root", "a!y!a!boutahli12")) {
-                String sql = "DELETE FROM rendez_vous WHERE id = ?";
-                PreparedStatement stmt = conn.prepareStatement(sql);
-                stmt.setInt(1, selection.getId());
-                stmt.executeUpdate();
-                stmt.close();
-                chargerDonneesRdv(); // met à jour le tableau
-            } catch (Exception e) {
-                e.printStackTrace();
-                Alert erreur = new Alert(Alert.AlertType.ERROR, "Erreur lors de l'annulation du rendez-vous.", ButtonType.OK);
-                erreur.showAndWait();
-            }
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/hopital", "root", "a!y!a!boutahli12")) {
+            String sql = "DELETE FROM rendez_vous WHERE id = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, selection.getId());
+            stmt.executeUpdate();
+            stmt.close();
+            chargerDonneesRdv();
+            afficherMessage("✅ Rendez-vous annulé avec succès.", false);
+        } catch (Exception e) {
+            afficherMessage("❌ Erreur lors de l'annulation.", true);
         }
     }
 
-
     @FXML
     public void rafraichirTableau() {
-        chargerDonneesRdv(); // Recharge les données depuis la base
+        chargerDonneesRdv();
+        afficherMessage("✅ Données rafraîchies.", false);
     }
+
     public void revenirVuePrincipale() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/RendezVous.fxml"));
             Parent principal = loader.load();
 
             RendezVousController controller = loader.getController();
-            controller.rootPane = this.rootPane; // pour conserver le même root
-            rootPane.setCenter(principal);
+            controller.rootPane = this.rootPane; // garder le même border pane
+            rootPane.setCenter(principal); // remettre seulement le contenu central
         } catch (Exception e) {
-            e.printStackTrace();
+            afficherMessage("❌ Erreur retour vue principale.", true);
         }
     }
 
+
+    @FXML
+    public void rechercherRdv() {
+        String filtre = searchField.getText().trim().toLowerCase();
+        if (filtre.isEmpty()) {
+            chargerDonneesRdv();
+            return;
+        }
+
+        ObservableList<RendezVous> liste = FXCollections.observableArrayList();
+
+        String sql = """
+        SELECT rv.id, 
+               CONCAT(p.nom, ' ', p.prenom) AS patient,
+               CONCAT(m.nom, ' ', m.prenom) AS medecin,
+               rv.date_heure, rv.motif, rv.statut
+        FROM rendez_vous rv
+        JOIN utilisateurs p ON rv.patient_id = p.id
+        JOIN utilisateurs m ON rv.medecin_id = m.id
+        WHERE LOWER(CONCAT(p.nom, ' ', p.prenom)) LIKE ?
+           OR LOWER(CONCAT(m.nom, ' ', m.prenom)) LIKE ?
+           OR rv.id = ?
+    """;
+
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/hopital", "root", "a!y!a!boutahli12");
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, "%" + filtre + "%");
+            stmt.setString(2, "%" + filtre + "%");
+
+            try {
+                stmt.setInt(3, Integer.parseInt(filtre));
+            } catch (NumberFormatException e) {
+                stmt.setInt(3, -1); // impossible ID
+            }
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                liste.add(new RendezVous(
+                        rs.getInt("id"),
+                        rs.getString("patient"),
+                        rs.getString("medecin"),
+                        rs.getString("date_heure"),
+                        rs.getString("motif"),
+                        rs.getString("statut")
+                ));
+            }
+
+            tableRdv.setItems(liste);
+
+        } catch (SQLException e) {
+            afficherMessage("❌ Erreur recherche RDV.", true);
+        }
+    }
+
+
+    private void afficherMessage(String message, boolean isError) {
+        messageLabel.setStyle(isError ? "-fx-text-fill: red;" : "-fx-text-fill: green;");
+        messageLabel.setText(message);
+        PauseTransition pause = new PauseTransition(Duration.seconds(3));
+        pause.setOnFinished(e -> messageLabel.setText(""));
+        pause.play();
+    }
 }

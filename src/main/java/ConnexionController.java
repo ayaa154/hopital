@@ -12,6 +12,7 @@ public class ConnexionController {
     @FXML private TextField emailField;
     @FXML private PasswordField passwordField;
 
+
     @FXML
     private void verifierConnexion() {
         String email = emailField.getText();
@@ -32,16 +33,35 @@ public class ConnexionController {
 
                 switch (role.toLowerCase()) {
                     case "receptionniste":
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("AccueilReceptionniste.fxml"));
-                        Parent root = loader.load();
-                        Stage stage = new Stage();
-                        stage.setScene(new Scene(root));
-                        stage.setTitle("Accueil Réceptionniste");
-                        stage.show();
+                        FXMLLoader loaderReceptionniste = new FXMLLoader(getClass().getResource("AccueilReceptionniste.fxml"));
+                        Parent rootReceptionniste = loaderReceptionniste.load();
+                        Stage stageReceptionniste = new Stage();
+                        stageReceptionniste.setScene(new Scene(rootReceptionniste));
+                        stageReceptionniste.setTitle("Accueil Réceptionniste");
+                        stageReceptionniste.show();
                         // Fermer la fenêtre actuelle
-                        Stage currentStage = (Stage) emailField.getScene().getWindow();
-                        currentStage.close();
+                        Stage currentStageReceptionniste = (Stage) emailField.getScene().getWindow();
+                        currentStageReceptionniste.close();
                         break;
+
+                    case "patient":
+                        // Charger la vue pour le patient
+                        FXMLLoader loaderPatient = new FXMLLoader(getClass().getResource("/profil_patient.fxml"));
+                        Parent rootPatient = loaderPatient.load();
+                        Stage stagePatient = new Stage();
+                        stagePatient.setScene(new Scene(rootPatient));
+                        stagePatient.setTitle("Page Patient");
+
+                        // Passer l'ID du patient au contrôleur du profil
+                        ProfilPatientController profilPatientController = loaderPatient.getController();
+                        profilPatientController.setPatientId(userId); // Passer l'ID du patient
+
+                        stagePatient.show();
+                        // Fermer la fenêtre actuelle
+                        Stage currentStagePatient = (Stage) emailField.getScene().getWindow();
+                        currentStagePatient.close();
+                        break;
+
                     // Autres rôles si besoin...
                     default:
                         showAlert("Rôle non pris en charge.");
@@ -59,6 +79,7 @@ public class ConnexionController {
             showAlert("Erreur de connexion !");
         }
     }
+
 
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK);

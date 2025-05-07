@@ -18,8 +18,6 @@ import java.util.*;
 public class PlanningController {
 
 
-
-
     @FXML
     private TableView<PlanningItem> planningTable;
     @FXML
@@ -48,9 +46,8 @@ public class PlanningController {
         remplirComboMedecins();
 
 
-
-
     }
+
     private void remplirComboMedecins() {
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
              Statement stmt = conn.createStatement()) {
@@ -65,7 +62,6 @@ public class PlanningController {
             e.printStackTrace();
         }
     }
-
 
 
     @FXML
@@ -131,22 +127,30 @@ public class PlanningController {
         String medecinNom = medecinCombo.getValue();
         LocalDate selectedDate = datePicker.getValue();
 
-        if (medecinNom == null || selectedDate == null) return;
+        if (medecinNom == null) return;
 
         planningTable.getItems().clear();
 
-        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD)) {
-            String sql = """
-            SELECT CONCAT(u.nom, ' ', u.prenom) AS medecin, rv.date_heure
-            FROM rendez_vous rv
-            JOIN utilisateurs u ON rv.medecin_id = u.id
-            WHERE CONCAT(u.nom, ' ', u.prenom) = ? AND DATE(rv.date_heure) = ?
-            ORDER BY rv.date_heure
-        """;
+        StringBuilder sql = new StringBuilder("""
+                    SELECT CONCAT(u.nom, ' ', u.prenom) AS medecin, rv.date_heure
+                    FROM rendez_vous rv
+                    JOIN utilisateurs u ON rv.medecin_id = u.id
+                    WHERE CONCAT(u.nom, ' ', u.prenom) = ?
+                """);
 
-            PreparedStatement stmt = conn.prepareStatement(sql);
+        if (selectedDate != null) {
+            sql.append(" AND DATE(rv.date_heure) = ?");
+        }
+
+        sql.append(" ORDER BY rv.date_heure");
+
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+
             stmt.setString(1, medecinNom);
-            stmt.setDate(2, Date.valueOf(selectedDate));
+            if (selectedDate != null) {
+                stmt.setDate(2, Date.valueOf(selectedDate));
+            }
 
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -158,10 +162,11 @@ public class PlanningController {
                         medecinNom,
                         date.toString(),
                         heure,
-                        heure
+                        heure // tu peux ajuster heureFin plus tard si besoin
                 ));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }}
+    }
+}

@@ -6,24 +6,24 @@
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="RendezVousController" fx:id="rootPane">
 
-
-
     <center>
         <VBox spacing="15" alignment="CENTER">
             <padding>
                 <Insets top="20" right="20" bottom="20" left="20"/>
             </padding>
 
-
-
+            <!-- Titre principal -->
             <Label text="📅 Gestion des Rendez-vous" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
 
-            <HBox spacing="10">
-                <Button text="Créer RDV" onAction="#ouvrirFormulaireAjout"/>
-                <Button text="Modifier RDV" onAction="#ouvrirFormulaireModification"/>
-                <Button text="Annuler RDV" onAction="#annulerRdv"/>
-                <Button text="🔄 Rafraîchir" onAction="#rafraichirTableau"/>
+            <!-- Label des messages juste en dessous -->
+            <HBox alignment="CENTER">
+                <Label fx:id="messageLabel" style="-fx-text-fill: green; -fx-font-weight: bold;" />
+            </HBox>
 
+            <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
+                <TextField fx:id="searchField" promptText="Rechercher par nom médecin, patient ou ID" />
+                <Button text="🔍 Rechercher" onAction="#rechercherRdv" />
+                <Button text="↻ Réinitialiser" onAction="#rafraichirTableau" />
             </HBox>
 
             <TableView fx:id="tableRdv" prefHeight="300">
@@ -37,7 +37,22 @@
                 </columns>
             </TableView>
 
-            <Button text="⬅ Retour au menu" onAction="#retourMenu" alignment="CENTER_LEFT" />
+            <HBox spacing="10" alignment="CENTER">
+                <Button text="Créer RDV" onAction="#ouvrirFormulaireAjout"/>
+                <Button text="Modifier RDV" onAction="#ouvrirFormulaireModification"/>
+                <Button text="Annuler RDV" onAction="#annulerRdv"/>
+            </HBox>
         </VBox>
     </center>
+
+    <!-- Bouton Retour au menu en bas à droite -->
+    <bottom>
+        <HBox alignment="BOTTOM_RIGHT">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <Button text="⬅ Retour au menu" onAction="#retourMenu"/>
+        </HBox>
+    </bottom>
+
 </BorderPane>

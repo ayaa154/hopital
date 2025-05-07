@@ -46,6 +46,8 @@
                                 <String fx:value="11:00"/>
                                 <String fx:value="13:00"/>
                                 <String fx:value="15:00"/>
+                                <String fx:value="15:30"/>
+
                             </FXCollections>
                         </items>
                     </ComboBox>
@@ -61,7 +63,7 @@
 
             <HBox spacing="10" alignment="CENTER">
                 <Button text="Créer" onAction="#creerRdv"/>
-                <Button text="Retour" onAction="#retour"/>
+
             </HBox>
 
         </VBox>

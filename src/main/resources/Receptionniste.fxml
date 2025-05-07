@@ -20,6 +20,7 @@
 
         <VBox spacing="10" style="-fx-padding: 10;">
             <HBox spacing="10" alignment="CENTER">
+                <Label fx:id="messageLabel" text="" style="-fx-text-fill: green; -fx-font-style: italic;" />
                 <TextField fx:id="searchField" promptText="Rechercher par nom ou ID..." />
                 <Button text="🔍 Rechercher" onAction="#rechercherPatient" />
                 <Button text="🔁 Réinitialiser" onAction="#rafraichirListe" />
@@ -57,8 +58,9 @@
             </padding>
             <Button text="Ajouter Patient" onAction="#ajouterPatient"/>
             <Button text="Supprimer Patient" onAction="#supprimerPatient"/>
-            <Button text="Rafraîchir" onAction="#rafraichirListe"/>
             <Button text="🔙 Retour au menu" onAction="#retourMenu" prefWidth="150" />
+
+
 
 
         </HBox>

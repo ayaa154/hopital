@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Pos?>
+
+<AnchorPane fx:controller="AdminUserManagementController" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <!-- TableView -->
+        <TableView fx:id="table" layoutX="20" layoutY="20" prefWidth="600" prefHeight="400">
+            <columns>
+                <TableColumn fx:id="idColumn" text="ID" prefWidth="100" />
+                <TableColumn fx:id="nomColumn" text="Nom" prefWidth="150" />
+                <TableColumn fx:id="prenomColumn" text="Prénom" prefWidth="150" />
+                <TableColumn fx:id="emailColumn" text="Email" prefWidth="200" />
+                <TableColumn fx:id="roleColumn" text="Rôle" prefWidth="150" />
+            </columns>
+        </TableView>
+
+        <!-- Buttons -->
+        <HBox spacing="20" alignment="CENTER" layoutX="20" layoutY="440">
+            <Button fx:id="addBtn" text="Ajouter" onAction="#handleAdd" />
+            <Button fx:id="editBtn" text="Modifier" onAction="#handleEdit" />
+            <Button fx:id="deleteBtn" text="Supprimer" onAction="#handleDelete" />
+        </HBox>
+    </children>
+</AnchorPane>
