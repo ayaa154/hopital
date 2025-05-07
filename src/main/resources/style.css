@@ -1,0 +1,84 @@
+/* Fichier style.css */
+
+/* Style général du conteneur VBox */
+.root {
+    -fx-font-family: "Arial", sans-serif;
+    -fx-background-color: #f4f7f9;
+    -fx-alignment: center;
+}
+
+/* Menu vertical (zone à gauche) */
+.side-menu {
+    -fx-background-color: #3a6cc2;
+    -fx-padding: 30px;
+    -fx-spacing: 20px;
+    -fx-pref-width: 200px;
+    -fx-alignment: top_center;
+    -fx-border-radius: 10px;
+}
+
+/* Style des boutons du menu */
+.menu-button {
+    -fx-background-color: #4c8cff;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-padding: 10px;
+    -fx-border-radius: 10px;
+    -fx-alignment: center-left;
+}
+
+/* Effet de survol pour les boutons */
+.menu-button:hover {
+    -fx-background-color: #3a6cc2;
+    -fx-effect: dropshadow(gaussian, #2a4e9a, 5, 0.3, 0, 3);
+}
+
+/* Contenu principal à droite (rendez-vous et autres éléments) */
+.main-content {
+    -fx-padding: 30px 50px;
+    -fx-spacing: 30px;
+    -fx-background-radius: 15px;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, #BDC3C7, 10, 0.3, 0, 4);
+}
+
+/* Style des titres */
+.title-label {
+    -fx-font-size: 30px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #2C3E50;
+}
+
+/* Style de la TableView */
+.table-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #BDC3C7;
+    -fx-border-width: 1;
+    -fx-border-radius: 10px;
+    -fx-font-size: 16px;
+    -fx-padding: 20px;
+    -fx-selection-bar: #1e90ff;
+    -fx-background-insets: 0, 1;
+}
+
+/* Style des colonnes de la TableView */
+.table-column {
+    -fx-alignment: center;
+    -fx-font-size: 16px;
+    -fx-text-fill: #34495E;
+}
+
+/* Style du bouton Retour */
+.button {
+    -fx-background-color: #3498DB;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-border-radius: 5px;
+    -fx-padding: 12px 30px;
+    -fx-effect: dropshadow(gaussian, #2980B9, 10, 0.3, 0, 4);
+}
+
+.button:hover {
+    -fx-background-color: #2980B9;
+    -fx-effect: dropshadow(gaussian, #3498DB, 10, 0.3, 0, 4);
+}

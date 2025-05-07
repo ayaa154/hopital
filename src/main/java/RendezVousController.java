@@ -93,18 +93,12 @@ public class RendezVousController {
             AjoutRdvController controller = loader.getController();
             controller.setRendezVousController(this);
 
-            // 👉 Vider tout sauf le center
             rootPane.setTop(null);
-            rootPane.setLeft(null);
-            rootPane.setRight(null);
-            rootPane.setBottom(null);
-
             rootPane.setCenter(formAjout);
         } catch (Exception e) {
             afficherMessage("❌ Erreur ouverture formulaire ajout.", true);
         }
     }
-
 
     @FXML
     public void ouvrirFormulaireModification() {
@@ -115,11 +109,16 @@ public class RendezVousController {
             ModifierRdvController controller = loader.getController();
             controller.setRendezVousController(this);
 
+            // Remplacer seulement le contenu central, garder le top et bottom
             rootPane.setCenter(modificationForm);
+            rootPane.setBottom(null); // Masque le bouton "Retour au menu"
+
         } catch (Exception e) {
+            e.printStackTrace();
             afficherMessage("❌ Erreur ouverture formulaire modification.", true);
         }
     }
+
 
     @FXML
     public void modifierRdv() {
@@ -162,6 +161,7 @@ public class RendezVousController {
             RendezVousController controller = loader.getController();
             controller.rootPane = this.rootPane; // garder le même border pane
             rootPane.setCenter(principal); // remettre seulement le contenu central
+
         } catch (Exception e) {
             afficherMessage("❌ Erreur retour vue principale.", true);
         }

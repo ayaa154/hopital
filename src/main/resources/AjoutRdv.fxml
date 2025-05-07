@@ -3,69 +3,64 @@
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.collections.FXCollections?>
-
 <?import java.lang.String?>
-<BorderPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="AjoutRdvController">
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="AjoutRdvController"
+            style="-fx-background-color: #f0f8ff;">
+
     <center>
-        <VBox spacing="10">
-            <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
-            </padding>
+        <VBox spacing="20" alignment="CENTER" style="-fx-padding: 30;">
+            <Label text="🩺 Créer un Rendez-vous"
+                   style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #003366;" />
 
-            <Label text="🩺 Créer un Rendez-vous" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+            <GridPane hgap="15" vgap="15">
+                <padding>
+                    <Insets top="10" right="10" bottom="10" left="10"/>
+                </padding>
 
-            <HBox spacing="10">
-                <Label text="Patient ID:"/>
-                <TextField fx:id="patientIdField"/>
+                <!-- Patient ID -->
+                <Label text="Patient ID:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                <TextField fx:id="patientIdField" GridPane.rowIndex="0" GridPane.columnIndex="1" style="-fx-pref-width: 250;" />
+
+                <!-- Médecin ID -->
+                <Label text="Médecin ID:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                <TextField fx:id="medecinIdField" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                <!-- Date -->
+                <Label text="Date:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                <DatePicker fx:id="datePicker" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+                <!-- Heure -->
+                <Label text="Heure:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                <ComboBox fx:id="heureCombo" promptText="HH:MM" GridPane.rowIndex="3" GridPane.columnIndex="1">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="08:00"/>
+                            <String fx:value="08:30"/>
+                            <String fx:value="09:00"/>
+                            <String fx:value="09:30"/>
+                            <String fx:value="10:00"/>
+                            <String fx:value="10:30"/>
+                            <String fx:value="11:00"/>
+                            <String fx:value="13:00"/>
+                            <String fx:value="15:00"/>
+                            <String fx:value="15:30"/>
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+
+                <!-- Motif -->
+                <Label text="Motif:" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+                <TextField fx:id="motifField" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+            </GridPane>
+
+            <!-- Boutons Créer et Retour -->
+            <HBox spacing="20" alignment="CENTER">
+                <Button text="Créer" onAction="#creerRdv"
+                        style="-fx-background-color: #007BFF; -fx-text-fill: white; -fx-font-size: 14px; -fx-border-radius: 6px; -fx-padding: 8 20;" />
+                <Button text="Retour" onAction="#retour"
+                        style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-font-size: 14px; -fx-border-radius: 6px; -fx-padding: 8 20;" />
             </HBox>
-
-            <HBox spacing="10">
-                <Label text="Médecin ID:"/>
-                <TextField fx:id="medecinIdField"/>
-            </HBox>
-
-            <HBox spacing="10">
-                <Label text="Date &amp; Heure:"/>
-                <HBox spacing="10">
-                    <Label text="Date:"/>
-                    <DatePicker fx:id="datePicker" />
-                </HBox>
-
-                <HBox spacing="10">
-                    <Label text="Heure:"/>
-                    <ComboBox fx:id="heureCombo" promptText="HH:MM">
-                        <items>
-                            <FXCollections fx:factory="observableArrayList">
-                                <String fx:value="08:00"/>
-                                <String fx:value="08:30"/>
-                                <String fx:value="09:00"/>
-                                <String fx:value="09:30"/>
-                                <String fx:value="10:00"/>
-                                <String fx:value="10:30"/>
-                                <String fx:value="11:00"/>
-                                <String fx:value="13:00"/>
-                                <String fx:value="15:00"/>
-                                <String fx:value="15:30"/>
-
-                            </FXCollections>
-                        </items>
-                    </ComboBox>
-                </HBox>
-
-            </HBox>
-
-            <HBox spacing="10">
-                <Label text="Motif:"/>
-                <TextField fx:id="motifField"/>
-            </HBox>
-
-
-            <HBox spacing="10" alignment="CENTER">
-                <Button text="Créer" onAction="#creerRdv"/>
-
-            </HBox>
-
         </VBox>
     </center>
 </BorderPane>

@@ -33,9 +33,12 @@
                     <TableColumn fx:id="medecinCol" text="Médecin"/>
                     <TableColumn fx:id="jourCol" text="Jour"/>
                     <TableColumn fx:id="heureDebutCol" text="Début"/>
-                    <TableColumn fx:id="heureFinCol" text="Fin"/>
+
                 </columns>
             </TableView>
+            <Label text="Créneaux disponibles" style="-fx-font-weight: bold;"/>
+            <ListView fx:id="disponibilitesList" prefHeight="150"/>
+
         </VBox>
     </center>
     <bottom>

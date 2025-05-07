@@ -26,6 +26,22 @@ public class AccueilReceptionnisteController {
         chargerPage("Planning.fxml"); // à créer plus tard
     }
 
+    @FXML
+    public void seDeconnecter() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Connexion.fxml"));
+            Parent root = loader.load();
+
+            Stage currentStage = (Stage) btnGestionPatients.getScene().getWindow();
+            currentStage.setScene(new Scene(root));
+            currentStage.setTitle("Connexion");
+            currentStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
 
     private void chargerPage(String fxmlFile) {

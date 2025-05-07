@@ -1,5 +1,10 @@
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
+
 import java.sql.*;
 import java.time.LocalDate;
 
@@ -61,9 +66,16 @@ public class ModifierRdvController {
 
     @FXML
     public void retour() {
-        if (rendezVousController != null) {
-            rendezVousController.revenirVuePrincipale();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/RendezVous.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) rdvIdField.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Erreur lors du retour à la vue principale.");
         }
     }
+
 
 }

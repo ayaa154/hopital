@@ -4,67 +4,68 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="ReceptionnisteController">
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="ReceptionnisteController"
+            style="-fx-background-color: #f0f8ff;"> <!-- Fond bleu clair -->
 
+    <!-- Titre principal -->
     <top>
         <Label text="👩‍💼 Gestion des Patients - Réceptionniste"
-               style="-fx-font-size: 20px; -fx-padding: 10; -fx-font-weight: bold;"
+               style="-fx-font-size: 22px; -fx-padding: 20px; -fx-font-weight: bold; -fx-text-fill: #003366;"
                BorderPane.alignment="CENTER"/>
     </top>
 
-
-
-
+    <!-- Zone centrale -->
     <center>
-
-
-        <VBox spacing="10" style="-fx-padding: 10;">
-            <HBox spacing="10" alignment="CENTER">
-                <Label fx:id="messageLabel" text="" style="-fx-text-fill: green; -fx-font-style: italic;" />
-                <TextField fx:id="searchField" promptText="Rechercher par nom ou ID..." />
-                <Button text="🔍 Rechercher" onAction="#rechercherPatient" />
-                <Button text="🔁 Réinitialiser" onAction="#rafraichirListe" />
+        <VBox spacing="15" style="-fx-padding: 20;">
+            <!-- Barre de recherche -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <TextField fx:id="searchField"
+                           promptText="🔎 Rechercher par nom ou ID..."
+                           style="-fx-pref-width: 300px; -fx-font-size: 14px;" />
+                <Button text="Rechercher" onAction="#rechercherPatient"
+                        style="-fx-background-color: #007BFF; -fx-text-fill: white; -fx-border-radius: 5px;" />
+                <Button text="Réinitialiser" onAction="#rafraichirListe"
+                        style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-border-radius: 5px;" />
+                <Label fx:id="messageLabel" style="-fx-text-fill: green; -fx-font-style: italic;" />
             </HBox>
 
-            <TableView fx:id="patientTable" prefHeight="300" prefWidth="600">
+            <!-- Tableau des patients -->
+            <TableView fx:id="patientTable" prefHeight="320" style="-fx-border-color: #cccccc;">
                 <columns>
-                    <TableColumn fx:id="idCol" text="ID" prefWidth="50"/>
-                    <TableColumn fx:id="nomCol" text="Nom" prefWidth="150"/>
-                    <TableColumn fx:id="prenomCol" text="Prénom" prefWidth="150"/>
-                    <TableColumn fx:id="emailCol" text="Email" prefWidth="200"/>
+                    <TableColumn fx:id="idCol" text="ID" prefWidth="60"/>
+                    <TableColumn fx:id="nomCol" text="Nom" prefWidth="180"/>
+                    <TableColumn fx:id="prenomCol" text="Prénom" prefWidth="180"/>
+                    <TableColumn fx:id="emailCol" text="Email" prefWidth="250"/>
                 </columns>
             </TableView>
 
-            <!-- 📌 Formulaire caché au départ -->
-            <VBox fx:id="formulaireAjout" visible="false" managed="false" spacing="10" alignment="CENTER">
-                <TextField fx:id="nomField" promptText="Nom"/>
-                <TextField fx:id="prenomField" promptText="Prénom"/>
-                <TextField fx:id="emailField" promptText="Email"/>
-                <PasswordField fx:id="passwordField" promptText="Mot de passe"/>
+            <!-- Formulaire d'ajout caché au départ -->
+            <VBox fx:id="formulaireAjout" visible="false" managed="false" spacing="10" alignment="CENTER"
+                  style="-fx-background-color: #e6f2ff; -fx-padding: 15; -fx-border-radius: 10; -fx-border-color: #007BFF;">
+                <TextField fx:id="nomField" promptText="Nom" style="-fx-pref-width: 300px;"/>
+                <TextField fx:id="prenomField" promptText="Prénom" style="-fx-pref-width: 300px;"/>
+                <TextField fx:id="emailField" promptText="Email" style="-fx-pref-width: 300px;"/>
+                <PasswordField fx:id="passwordField" promptText="Mot de passe" style="-fx-pref-width: 300px;"/>
 
-                <HBox spacing="10">
-                    <Button text="Confirmer" onAction="#confirmerAjoutPatient"/>
-                    <Button text="Retour" onAction="#annulerAjoutPatient"/>
+                <HBox spacing="15" alignment="CENTER">
+                    <Button text="✅ Confirmer" onAction="#confirmerAjoutPatient"
+                            style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-border-radius: 5px;" />
+                    <Button text="❌ Annuler" onAction="#annulerAjoutPatient"
+                            style="-fx-background-color: #dc3545; -fx-text-fill: white; -fx-border-radius: 5px;" />
                 </HBox>
             </VBox>
-
         </VBox>
     </center>
 
+    <!-- Boutons bas -->
     <bottom>
-        <HBox spacing="10.0" alignment="CENTER">
-            <padding>
-                <Insets top="10" right="10" bottom="10" left="10"/>
-            </padding>
-            <Button text="Ajouter Patient" onAction="#ajouterPatient"/>
-            <Button text="Supprimer Patient" onAction="#supprimerPatient"/>
-            <Button text="🔙 Retour au menu" onAction="#retourMenu" prefWidth="150" />
-
-
-
-
+        <HBox spacing="15" alignment="CENTER_RIGHT" style="-fx-padding: 10 20 10 20;">
+            <Button text="➕ Ajouter Patient" onAction="#ajouterPatient"
+                    style="-fx-background-color: #17a2b8; -fx-text-fill: white; -fx-border-radius: 5px;" />
+            <Button text="🗑️ Supprimer" onAction="#supprimerPatient"
+                    style="-fx-background-color: #ffc107; -fx-text-fill: black; -fx-border-radius: 5px;" />
+            <Button text="⬅ Retour au menu" onAction="#retourMenu" prefWidth="150"
+                    style="-fx-background-color: #343a40; -fx-text-fill: white; -fx-border-radius: 5px;" />
         </HBox>
     </bottom>
-
-
 </BorderPane>

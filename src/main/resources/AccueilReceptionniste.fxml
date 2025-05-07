@@ -13,6 +13,9 @@
 
             <Button text="📅 Gérer les rendez-vous" onAction="#ouvrirGestionRdv" prefWidth="200"/>
             <Button text="🗓️ Gérer le planning" onAction="#ouvrirPlanning" prefWidth="200"/>
+            <Button text="🚪 Se déconnecter" onAction="#seDeconnecter" prefWidth="200"
+                    style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
+
         </VBox>
     </center>
 </BorderPane>

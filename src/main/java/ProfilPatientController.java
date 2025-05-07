@@ -1,211 +1,196 @@
-import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.stage.Stage;
-import java.sql.*;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import java.io.IOException;
+import javafx.scene.control.*;
+import java.sql.*;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
 
 public class ProfilPatientController {
 
-    @FXML private TextField txtNom;
-    @FXML private TextField txtPrenom;
-    @FXML private TextField txtEmail;
-    @FXML private TextField txtTelephone;
-    @FXML private TextField txtAdresse;
-    @FXML private TextArea txtAntecedents;
-    @FXML private PasswordField txtNewPassword;
-    @FXML private PasswordField txtConfirmPassword;
+    @FXML private TextField nomField;
+    @FXML private TextField prenomField;
+    @FXML private TextField emailField;
+    @FXML private DatePicker dateNaissanceField;
+    @FXML private TextField telephoneField;
+    @FXML private TextArea adresseField;
+    @FXML private PasswordField motDePasseField;  // Champ mot de passe
+    @FXML private Button modifierButton;
 
-    private Connection connection;
-    private int patientId;
+    private int userId;
 
-    // Constantes pour les requêtes SQL
-    private static final String SELECT_PATIENT_INFO_QUERY = "SELECT u.nom, u.prenom, u.email, u.telephone, u.adresse, p.antecedents FROM utilisateurs u JOIN patients p ON u.id = p.id WHERE u.id = ?";
-    private static final String UPDATE_PATIENT_INFO_QUERY = "UPDATE utilisateurs u JOIN patients p ON u.id = p.id SET u.nom = ?, u.prenom = ?, u.email = ?, u.telephone = ?, u.adresse = ?, p.antecedents = ? WHERE u.id = ?";
-    private static final String UPDATE_PASSWORD_QUERY = "UPDATE utilisateurs SET mot_de_passe = SHA2(?, 256) WHERE id = ?";
-
-    // Méthode pour définir l'ID du patient
-    public void setPatientId(int patientId) {
-        this.patientId = patientId;
-        loadPatientInfo(); // Charge les données immédiatement
+    public void setUserId(int userId) {
+        this.userId = userId;
+        loadPatientData();
     }
 
-    @FXML
-    public void initialize() {
-        connectToDatabase(); // Établit la connexion à la base de données
-    }
-
-    // Connexion à la base de données
-    private void connectToDatabase() {
+    private void loadPatientData() {
         try {
-            connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost/hopital",
-                    "root",
-                    "a!y!a!boutahli12");
-            System.out.println("Connexion à la base de données réussie");
-        } catch (SQLException e) {
-            showAlert("Échec de la connexion à la base de données");
-            e.printStackTrace();
-        }
-    }
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/hopital", "root", "a!y!a!boutahli12");
+            PreparedStatement stmt = conn.prepareStatement(
+                    "SELECT nom, prenom, email, date_naissance, telephone, adresse " +
+                            "FROM utilisateurs WHERE id = ?"
+            );
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
 
-    // Chargement des informations du patient
-    private void loadPatientInfo() {
-        if (connection == null) {
-            showAlert("Pas de connexion à la base de données");
-            return;
-        }
-
-        try (PreparedStatement stmt = connection.prepareStatement(SELECT_PATIENT_INFO_QUERY)) {
-            stmt.setInt(1, patientId);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    // Récupération des données
-                    String nom = rs.getString("nom");
-                    String prenom = rs.getString("prenom");
-                    String email = rs.getString("email");
-                    String telephone = rs.getString("telephone");
-                    String adresse = rs.getString("adresse");
-                    String antecedents = rs.getString("antecedents");
-
-                    // Mise à jour de l'interface utilisateur
-                    Platform.runLater(() -> {
-                        txtNom.setText(nom != null ? nom : "");
-                        txtPrenom.setText(prenom != null ? prenom : "");
-                        txtEmail.setText(email != null ? email : "");
-                        txtTelephone.setText(telephone != null ? telephone : "");
-                        txtAdresse.setText(adresse != null ? adresse : "");
-                        txtAntecedents.setText(antecedents != null ? antecedents : "");
-                    });
-                } else {
-                    showAlert("Aucun patient trouvé avec cet ID");
+            if (rs.next()) {
+                nomField.setText(rs.getString("nom"));
+                prenomField.setText(rs.getString("prenom"));
+                emailField.setText(rs.getString("email"));
+                if (rs.getDate("date_naissance") != null) {
+                    dateNaissanceField.setValue(rs.getDate("date_naissance").toLocalDate());
                 }
+                telephoneField.setText(rs.getString("telephone") != null ? rs.getString("telephone") : "");
+                adresseField.setText(rs.getString("adresse") != null ? rs.getString("adresse") : "");
             }
-        } catch (SQLException e) {
-            showAlert("Erreur lors du chargement des données");
+
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
             e.printStackTrace();
+            showAlert("Erreur lors du chargement des données du patient");
         }
     }
 
-    // Mise à jour des informations
     @FXML
-    private void handleUpdate() {
-        if (txtNom.getText().isEmpty() || txtPrenom.getText().isEmpty() || txtEmail.getText().isEmpty()) {
-            showAlert("Nom, Prénom et Email sont obligatoires");
+    private void handleModifierButton() {
+        // Récupérer les nouvelles valeurs des champs
+        String nom = nomField.getText();
+        String prenom = prenomField.getText();
+        String email = emailField.getText();
+        LocalDate dateNaissance = dateNaissanceField.getValue();
+        String telephone = telephoneField.getText();
+        String adresse = adresseField.getText();
+        String nouveauMotDePasse = motDePasseField.getText(); // Nouveau mot de passe
+
+        // Validation des données (peut être améliorée)
+        if (nom.isEmpty() || prenom.isEmpty() || email.isEmpty()) {
+            showAlert("Veuillez remplir tous les champs obligatoires.");
             return;
         }
 
-        try (PreparedStatement stmt = connection.prepareStatement(UPDATE_PATIENT_INFO_QUERY)) {
-            stmt.setString(1, txtNom.getText());
-            stmt.setString(2, txtPrenom.getText());
-            stmt.setString(3, txtEmail.getText());
-            stmt.setString(4, txtTelephone.getText());
-            stmt.setString(5, txtAdresse.getText());
-            stmt.setString(6, txtAntecedents.getText());
-            stmt.setInt(7, patientId);
+        // Hachage du mot de passe si un nouveau mot de passe est fourni
+        String motDePasseHache = null;
+        if (!nouveauMotDePasse.isEmpty()) {
+            motDePasseHache = PasswordUtil.hashPassword(nouveauMotDePasse);
+        }
+
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/hopital", "root", "Meryemechiguerr");
+
+            String updateQuery = "UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, date_naissance = ?, telephone = ?, adresse = ?";
+
+            // Si un mot de passe est fourni, on l'ajoute à la requête de mise à jour
+            if (motDePasseHache != null) {
+                updateQuery += ", mot_de_passe = ?";
+            }
+
+            updateQuery += " WHERE id = ?";
+
+            PreparedStatement stmt = conn.prepareStatement(updateQuery);
+            stmt.setString(1, nom);
+            stmt.setString(2, prenom);
+            stmt.setString(3, email);
+            stmt.setDate(4, (dateNaissance != null) ? Date.valueOf(dateNaissance) : null);
+            stmt.setString(5, telephone);
+            stmt.setString(6, adresse);
+
+            // Si un mot de passe a été saisi, on l'ajoute à la requête
+            if (motDePasseHache != null) {
+                stmt.setString(7, motDePasseHache); // Mot de passe haché
+                stmt.setInt(8, userId);  // ID de l'utilisateur
+            } else {
+                stmt.setInt(7, userId);  // ID de l'utilisateur
+            }
 
             int rowsUpdated = stmt.executeUpdate();
-            showAlert(rowsUpdated > 0 ? "Informations mises à jour avec succès" : "Aucune modification effectuée");
-        } catch (SQLException e) {
-            showAlert("Erreur lors de la mise à jour");
-            e.printStackTrace();
-        }
-    }
-
-    // Changement de mot de passe
-    @FXML
-    private void handleChangePassword() {
-        String newPass = txtNewPassword.getText();
-        String confirmPass = txtConfirmPassword.getText();
-
-        if (newPass.isEmpty() || confirmPass.isEmpty()) {
-            showAlert("Les champs ne peuvent pas être vides");
-            return;
-        }
-
-        if (!newPass.equals(confirmPass)) {
-            showAlert("Les mots de passe ne correspondent pas");
-            return;
-        }
-
-        try (PreparedStatement stmt = connection.prepareStatement(UPDATE_PASSWORD_QUERY)) {
-            stmt.setString(1, newPass);
-            stmt.setInt(2, patientId);
-
-            int rowsUpdated = stmt.executeUpdate();
-            showAlert(rowsUpdated > 0 ? "Mot de passe mis à jour" : "Échec de la mise à jour du mot de passe");
-
             if (rowsUpdated > 0) {
-                txtNewPassword.clear();
-                txtConfirmPassword.clear();
+                showAlert("Données mises à jour avec succès !");
+            } else {
+                showAlert("Erreur lors de la mise à jour des données.");
             }
-        } catch (SQLException e) {
-            showAlert("Erreur lors du changement de mot de passe");
+
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
             e.printStackTrace();
+            showAlert("Erreur lors de la mise à jour des données.");
         }
     }
 
-    // Fermeture de la fenêtre
-    @FXML
-    private void handleClose() {
-        try {
-            if (connection != null && !connection.isClosed()) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        Stage stage = (Stage) txtNom.getScene().getWindow();
-        stage.close();
-    }
-
-    // Redirection vers d'autres pages
-    @FXML private void handleProfilPatient() {
-        changeScene("profil_patient.fxml", patientId);
-    }
-
-    @FXML private void handleMesRendezVous() {
-        changeScene("MesRendezVous.fxml", patientId);
-    }
-
-    @FXML private void handleDossierMedical() {
-        changeScene("DossierMedical.fxml", patientId);
-    }
-
-    private void changeScene(String fxmlFile, int patientId) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
-            Parent root = loader.load();
-
-            Object controller = loader.getController();
-            if (controller instanceof ProfilPatientController) {
-                ((ProfilPatientController) controller).setPatientId(patientId);
-            }
-
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Nouvelle scène");
-            stage.show();
-
-            Stage currentStage = (Stage) txtNom.getScene().getWindow();
-            currentStage.close();
-
-        } catch (IOException e) {
-            showAlert("Erreur lors de l'ouverture de la nouvelle scène");
-            e.printStackTrace();
-        }
-    }
-
-    // Méthode utilitaire pour afficher des alertes
     private void showAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, message, ButtonType.OK);
         alert.showAndWait();
     }
+    @FXML
+    private void handleRendezVousButton() {
+        try {
+            // Charger le fichier FXML de la page MesRendezVous
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MesRendezVous.fxml"));
+            VBox root = loader.load();
+
+            // Obtenir le contrôleur de la page des rendez-vous
+            MesRendezVousController rendezVousController = loader.getController();
+            rendezVousController.setUserId(userId);  // Passer l'ID du patient pour charger ses rendez-vous
+
+            // Créer la nouvelle scène
+            Scene scene = new Scene(root);
+
+            // Obtenir la fenêtre (Stage) actuelle et la mettre à jour
+            Stage stage = (Stage) modifierButton.getScene().getWindow();
+            stage.setScene(scene);  // Mettre à jour la scène avec la nouvelle page
+            stage.show();  // Afficher la nouvelle scène
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Erreur lors du chargement des rendez-vous.");
+        }
+    }
+
+
+
+
+    @FXML
+    private void handleProfilButton() {
+        // Logique pour afficher le profil du patient
+        System.out.println("Affichage du profil");
+    }
+
+
+    @FXML
+    private void handleDossierButton() {
+        try {
+            // Charger le fichier FXML de la page Dossier Médical
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/dossier_medical.fxml"));
+            BorderPane root = loader.load();  // Charger un BorderPane ici
+
+
+            // Obtenir le contrôleur de la page Dossier Médical
+            DossierMedicalController dossierMedicalController = loader.getController();
+            dossierMedicalController.setUserId(userId);  // Passer l'ID du patient pour charger ses informations médicales
+
+            // Créer la nouvelle scène
+            Scene scene = new Scene(root);
+
+            // Obtenir la fenêtre (Stage) actuelle et la mettre à jour
+            Stage stage = (Stage) modifierButton.getScene().getWindow();
+            stage.setScene(scene);  // Mettre à jour la scène avec la nouvelle page
+            stage.show();  // Afficher la nouvelle scène
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Erreur lors du chargement du dossier médical.");
+        }
+    }
+
+
+
 }

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="DossierMedicalController">
+
+    <!-- Menu vertical gauche -->
+    <left>
+        <VBox spacing="20" style="-fx-background-color: #3a6cc2; -fx-padding: 30;">
+            <Button text="Mes Rendez-vous" style="-fx-background-color: #4c8cff; -fx-text-fill: white; -fx-font-size: 16; -fx-background-radius: 10;" onAction="#handleRendezVousButton"/>
+            <Button text="Mon Profil" style="-fx-background-color: #4c8cff; -fx-text-fill: white; -fx-font-size: 16; -fx-background-radius: 10;" onAction="#handleProfilButton"/>
+            <Button text="Dossier Médical" style="-fx-background-color: #1e50a2; -fx-text-fill: white; -fx-font-size: 16; -fx-background-radius: 10;" onAction="#handleDossierButton"/>
+        </VBox>
+    </left>
+
+    <!-- Contenu principal -->
+    <center>
+        <VBox spacing="20" alignment="CENTER" style="-fx-padding: 30;">
+            <Label text="Dossier Médical du Patient" style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
+
+            <TableView fx:id="dossierTable" prefWidth="800" prefHeight="400">
+                <columns>
+                    <TableColumn fx:id="dateCol" text="Date" prefWidth="100"/>
+                    <TableColumn fx:id="diagnosticCol" text="Diagnostic" prefWidth="250"/>
+                    <TableColumn fx:id="traitementCol" text="Traitement" prefWidth="250"/>
+                    <TableColumn fx:id="medecinCol" text="Médecin" prefWidth="150"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+
+</BorderPane>

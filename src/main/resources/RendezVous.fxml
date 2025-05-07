@@ -4,55 +4,59 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="RendezVousController" fx:id="rootPane">
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="RendezVousController" fx:id="rootPane"
+            style="-fx-background-color: #f0f8ff;"> <!-- fond bleu clair -->
 
     <center>
-        <VBox spacing="15" alignment="CENTER">
-            <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
-            </padding>
+        <VBox spacing="20" alignment="CENTER" style="-fx-padding: 30;">
+            <!-- Titre -->
+            <Label text="📅 Gestion des Rendez-vous"
+                   style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #003366;" />
 
-            <!-- Titre principal -->
-            <Label text="📅 Gestion des Rendez-vous" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
-
-            <!-- Label des messages juste en dessous -->
+            <!-- Label message -->
             <HBox alignment="CENTER">
-                <Label fx:id="messageLabel" style="-fx-text-fill: green; -fx-font-weight: bold;" />
+                <Label fx:id="messageLabel"
+                       style="-fx-text-fill: green; -fx-font-weight: bold; -fx-font-style: italic;" />
             </HBox>
 
-            <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
-                <TextField fx:id="searchField" promptText="Rechercher par nom médecin, patient ou ID" />
-                <Button text="🔍 Rechercher" onAction="#rechercherRdv" />
-                <Button text="↻ Réinitialiser" onAction="#rafraichirTableau" />
+            <!-- Barre de recherche -->
+            <HBox spacing="10" alignment="CENTER">
+                <TextField fx:id="searchField" promptText="🔍 Nom médecin, patient ou ID"
+                           style="-fx-pref-width: 300px; -fx-font-size: 14px;" />
+                <Button text="Rechercher" onAction="#rechercherRdv"
+                        style="-fx-background-color: #007BFF; -fx-text-fill: white; -fx-border-radius: 5px;" />
+                <Button text="Réinitialiser" onAction="#rafraichirTableau"
+                        style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-border-radius: 5px;" />
             </HBox>
 
-            <TableView fx:id="tableRdv" prefHeight="300">
+            <!-- Tableau -->
+            <TableView fx:id="tableRdv" prefHeight="320" style="-fx-border-color: #cccccc;">
                 <columns>
-                    <TableColumn fx:id="idCol" text="ID"/>
-                    <TableColumn fx:id="patientCol" text="Patient"/>
-                    <TableColumn fx:id="medecinCol" text="Médecin"/>
-                    <TableColumn fx:id="dateCol" text="Date/Heure"/>
-                    <TableColumn fx:id="motifCol" text="Motif"/>
-                    <TableColumn fx:id="statutCol" text="Statut"/>
+                    <TableColumn fx:id="idCol" text="ID" prefWidth="50"/>
+                    <TableColumn fx:id="patientCol" text="Patient" prefWidth="150"/>
+                    <TableColumn fx:id="medecinCol" text="Médecin" prefWidth="150"/>
+                    <TableColumn fx:id="dateCol" text="Date/Heure" prefWidth="150"/>
+                    <TableColumn fx:id="motifCol" text="Motif" prefWidth="150"/>
+                    <TableColumn fx:id="statutCol" text="Statut" prefWidth="100"/>
                 </columns>
             </TableView>
 
+            <!-- Actions -->
             <HBox spacing="10" alignment="CENTER">
-                <Button text="Créer RDV" onAction="#ouvrirFormulaireAjout"/>
-                <Button text="Modifier RDV" onAction="#ouvrirFormulaireModification"/>
-                <Button text="Annuler RDV" onAction="#annulerRdv"/>
+                <Button text="➕ Créer RDV" onAction="#ouvrirFormulaireAjout"
+                        style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-border-radius: 5px;" />
+                <Button text="✏️ Modifier RDV" onAction="#ouvrirFormulaireModification"
+                        style="-fx-background-color: #ffc107; -fx-text-fill: black; -fx-border-radius: 5px;" />
+                <Button text="❌ Annuler RDV" onAction="#annulerRdv"
+                        style="-fx-background-color: #dc3545; -fx-text-fill: white; -fx-border-radius: 5px;" />
             </HBox>
         </VBox>
     </center>
 
-    <!-- Bouton Retour au menu en bas à droite -->
     <bottom>
-        <HBox alignment="BOTTOM_RIGHT">
-            <padding>
-                <Insets top="10" right="10" bottom="10" left="10"/>
-            </padding>
-            <Button text="⬅ Retour au menu" onAction="#retourMenu"/>
+        <HBox alignment="BOTTOM_RIGHT" style="-fx-padding: 10 20 10 10;">
+            <Button text="⬅ Retour au menu" onAction="#retourMenu"
+                    style="-fx-background-color: #343a40; -fx-text-fill: white; -fx-border-radius: 5px;" />
         </HBox>
     </bottom>
-
 </BorderPane>

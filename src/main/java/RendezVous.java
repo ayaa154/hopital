@@ -15,10 +15,27 @@ public class RendezVous {
         this.statut = statut;
     }
 
-    public int getId() { return id; }
-    public String getPatient() { return patient; }
-    public String getMedecin() { return medecin; }
-    public String getDateHeure() { return dateHeure; }
-    public String getMotif() { return motif; }
-    public String getStatut() { return statut; }
+    public int getId() {
+        return id;
+    }
+
+    public String getPatient() {
+        return patient;
+    }
+
+    public String getMedecin() {
+        return medecin;
+    }
+
+    public String getDateHeure() {
+        return dateHeure;
+    }
+
+    public String getMotif() {
+        return motif;
+    }
+
+    public String getStatut() {
+        return statut;
+    }
 }

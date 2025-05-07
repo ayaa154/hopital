@@ -26,8 +26,14 @@ public class PlanningController {
     private TableColumn<PlanningItem, String> jourCol;
     @FXML
     private TableColumn<PlanningItem, String> heureDebutCol;
+
+    @FXML private ListView<String> disponibilitesList;
+
     @FXML
-    private TableColumn<PlanningItem, String> heureFinCol;
+    private ComboBox<String> medecinCombo;
+
+
+
 
     @FXML
     private BorderPane rootPane;
@@ -42,7 +48,7 @@ public class PlanningController {
         medecinCol.setCellValueFactory(new PropertyValueFactory<>("medecin"));
         jourCol.setCellValueFactory(new PropertyValueFactory<>("jour"));
         heureDebutCol.setCellValueFactory(new PropertyValueFactory<>("heureDebut"));
-        heureFinCol.setCellValueFactory(new PropertyValueFactory<>("heureFin"));
+
         remplirComboMedecins();
 
 
@@ -109,7 +115,7 @@ public class PlanningController {
                 String heure = rs.getString("heure");
 
                 planningTable.getItems().add(new PlanningItem(
-                        medecin, jour, heure, heure  // même heure pour début/fin
+                        medecin, jour, heure // même heure pour début/fin
                 ));
             }
 
@@ -120,9 +126,6 @@ public class PlanningController {
 
 
     @FXML
-    private ComboBox<String> medecinCombo; // à ajouter dans ton FXML + ton contrôleur
-
-    @FXML
     public void filtrerParMedecinEtDate() {
         String medecinNom = medecinCombo.getValue();
         LocalDate selectedDate = datePicker.getValue();
@@ -130,13 +133,14 @@ public class PlanningController {
         if (medecinNom == null) return;
 
         planningTable.getItems().clear();
+        disponibilitesList.getItems().clear(); // on vide aussi la liste des créneaux dispo
 
         StringBuilder sql = new StringBuilder("""
-                    SELECT CONCAT(u.nom, ' ', u.prenom) AS medecin, rv.date_heure
-                    FROM rendez_vous rv
-                    JOIN utilisateurs u ON rv.medecin_id = u.id
-                    WHERE CONCAT(u.nom, ' ', u.prenom) = ?
-                """);
+        SELECT CONCAT(u.nom, ' ', u.prenom) AS medecin, rv.date_heure
+        FROM rendez_vous rv
+        JOIN utilisateurs u ON rv.medecin_id = u.id
+        WHERE CONCAT(u.nom, ' ', u.prenom) = ?
+    """);
 
         if (selectedDate != null) {
             sql.append(" AND DATE(rv.date_heure) = ?");
@@ -145,7 +149,8 @@ public class PlanningController {
         sql.append(" ORDER BY rv.date_heure");
 
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
-             PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+             PreparedStatement stmt = conn.prepareStatement(sql.toString(),
+                     ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
 
             stmt.setString(1, medecinNom);
             if (selectedDate != null) {
@@ -153,18 +158,38 @@ public class PlanningController {
             }
 
             ResultSet rs = stmt.executeQuery();
+
+            Set<String> heuresOccupees = new HashSet<>();
             while (rs.next()) {
                 Timestamp ts = rs.getTimestamp("date_heure");
                 LocalDate date = ts.toLocalDateTime().toLocalDate();
-                String heure = ts.toLocalDateTime().toLocalTime().toString();
+                String heure = ts.toLocalDateTime().toLocalTime().toString().substring(0, 5);
 
                 planningTable.getItems().add(new PlanningItem(
                         medecinNom,
                         date.toString(),
-                        heure,
-                        heure // tu peux ajuster heureFin plus tard si besoin
+                        heure
                 ));
+
+                heuresOccupees.add(heure);
             }
+
+            // Créneaux standards disponibles
+            List<String> tousLesCreneaux = Arrays.asList(
+                    "08:00", "08:30", "09:00", "09:30", "10:00", "10:30",
+                    "11:00", "11:30", "13:00", "13:30", "14:00", "14:30",
+                    "15:00", "15:30", "16:00", "16:30"
+            );
+
+            List<String> disponibles = new ArrayList<>();
+            for (String creneau : tousLesCreneaux) {
+                if (!heuresOccupees.contains(creneau)) {
+                    disponibles.add(creneau);
+                }
+            }
+
+            disponibilitesList.setItems(FXCollections.observableArrayList(disponibles));
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

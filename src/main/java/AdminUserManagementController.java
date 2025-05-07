@@ -16,6 +16,8 @@ public class AdminUserManagementController {
     @FXML private TableColumn<User, String> prenomColumn;
     @FXML private TableColumn<User, String> emailColumn;
     @FXML private TableColumn<User, String> roleColumn;
+    // (Optionnel) Colonne mot de passe
+    // @FXML private TableColumn<User, String> motDePasseColumn;
 
     private ObservableList<User> users;
     private Connection connection;
@@ -29,6 +31,7 @@ public class AdminUserManagementController {
         prenomColumn.setCellValueFactory(new PropertyValueFactory<>("prenom"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         roleColumn.setCellValueFactory(new PropertyValueFactory<>("role"));
+        // motDePasseColumn.setCellValueFactory(new PropertyValueFactory<>("motDePasse")); // optionnel
 
         connectToDatabase();
         loadUsers();
@@ -56,7 +59,8 @@ public class AdminUserManagementController {
                         rs.getString("nom"),
                         rs.getString("prenom"),
                         rs.getString("email"),
-                        rs.getString("role")
+                        rs.getString("role"),
+                        rs.getString("mot_de_passe") // colonne à ajouter en BDD si pas encore
                 ));
             }
         } catch (SQLException e) {
