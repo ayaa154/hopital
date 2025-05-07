@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="MesRendezVousController">
+    <left>
+        <VBox spacing="10" style="-fx-background-color: #D3D3D3;">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <Button text="Profil Patient" onAction="#handleProfilPatient"/>
+            <Button text="Mes Rendez-vous" onAction="#handlePrendreRendezVous" style="-fx-font-weight: bold;"/>
+            <Button text="Dossier Médical" onAction="#handleDossierMedical"/>
+        </VBox>
+    </left>
+    <center>
+        <VBox spacing="15">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <Label text="Mes Rendez-vous" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Filtrer par statut:"/>
+
+
+                <Button text="Filtrer" onAction="#handleFiltrer"/>
+                <Button text="Actualiser" onAction="#handleActualiser"/>
+                <Button text="Prendre RDV" onAction="#handlePrendreRendezVous"/>
+            </HBox>
+
+            <TableView fx:id="tableRendezVous" prefHeight="400">
+                <columns>
+                    <TableColumn fx:id="dateColumn" text="Date" prefWidth="150"/>
+                    <TableColumn fx:id="medecinColumn" text="Médecin" prefWidth="200"/>
+                    <TableColumn fx:id="specialiteColumn" text="Spécialité" prefWidth="150"/>
+                    <TableColumn fx:id="motifColumn" text="Motif" prefWidth="200"/>
+                    <TableColumn fx:id="statutColumn" text="Statut" prefWidth="100"/>
+                    <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="150"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+</BorderPane>

@@ -161,51 +161,20 @@ public class AdminUserManagement extends JFrame {
                     int index = 5;
                     if (!password.isEmpty()) {
                         stmt.setString(index++, hashPassword(password));
-<<<<<<< HEAD
-=======
 
->>>>>>> 4e2887cf27a69e1c9b2b01e71ef268bf36467db4
                     }
                     stmt.setInt(index, id);
                     stmt.executeUpdate();
                 } else {
-                    // Ajouter l'utilisateur à la table utilisateurs
                     PreparedStatement stmt = connection.prepareStatement(
                             "INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, role) VALUES (?, ?, ?, ?, ?)");
                     stmt.setString(1, nom);
                     stmt.setString(2, prenom);
                     stmt.setString(3, email);
                     stmt.setString(4, hashPassword(password));
-<<<<<<< HEAD
-=======
 
->>>>>>> 4e2887cf27a69e1c9b2b01e71ef268bf36467db4
                     stmt.setString(5, role);
                     stmt.executeUpdate();
-
-                    // Récupérer l'ID de l'utilisateur nouvellement ajouté
-                    Statement stmtId = connection.createStatement();
-                    ResultSet rs = stmtId.executeQuery("SELECT LAST_INSERT_ID()");
-                    if (rs.next()) {
-                        int newUserId = rs.getInt(1);
-
-                        // Si le rôle est patient, ajouter dans la table patients
-                        if (role.equals("patient")) {
-                            PreparedStatement patientStmt = connection.prepareStatement(
-                                    "INSERT INTO patients (id, antecedents) VALUES (?, ?)");
-                            patientStmt.setInt(1, newUserId);
-                            patientStmt.setString(2, ""); // Valeur vide pour les antécédents, à modifier selon l'entrée
-                            patientStmt.executeUpdate();
-                        }
-                        // Si le rôle est médecin, ajouter dans la table medecins
-                        else if (role.equals("medecin")) {
-                            PreparedStatement medecinStmt = connection.prepareStatement(
-                                    "INSERT INTO medecins (id, specialite) VALUES (?, ?)");
-                            medecinStmt.setInt(1, newUserId);
-                            medecinStmt.setString(2, ""); // Valeur vide pour la spécialité, à modifier selon l'entrée
-                            medecinStmt.executeUpdate();
-                        }
-                    }
                 }
                 loadUsers();
             } catch (SQLException ex) {
