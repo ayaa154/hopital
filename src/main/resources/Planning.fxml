@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml" fx:controller="PlanningController">
+
+    <top>
+
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+
+            <Label text="Médecin :" />
+            <ComboBox fx:id="medecinCombo" onAction="#filtrerParMedecinEtDate"/>
+            <Label text="Date :" />
+            <DatePicker fx:id="datePicker" onAction="#filtrerParMedecinEtDate"/>
+            </HBox>
+
+
+
+
+    </top>
+
+    <center>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <TableView fx:id="planningTable" prefHeight="400">
+                <columns>
+                    <TableColumn fx:id="medecinCol" text="Médecin"/>
+                    <TableColumn fx:id="jourCol" text="Jour"/>
+                    <TableColumn fx:id="heureDebutCol" text="Début"/>
+                    <TableColumn fx:id="heureFinCol" text="Fin"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" spacing="10">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <Button text="⬅ Retour au menu" onAction="#retourMenu"/>
+        </HBox>
+
+    </bottom>
+
+</BorderPane>

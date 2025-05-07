@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.collections.FXCollections?>
+
+<?import java.lang.String?>
+<VBox spacing="10" xmlns:fx="http://javafx.com/fxml" fx:controller="ModifierRdvController">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+    <Label text="✏️ Modifier un Rendez-vous" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+    <HBox spacing="10">
+        <Label text="ID du RDV:"/>
+        <TextField fx:id="rdvIdField"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Nouvelle date:"/>
+        <DatePicker fx:id="datePicker"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Nouvelle heure:"/>
+        <ComboBox fx:id="heureCombo" promptText="HH:MM">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="08:00"/><String fx:value="08:30"/><String fx:value="09:00"/>
+                    <String fx:value="10:00"/><String fx:value="10:30"/><String fx:value="11:00"/>
+                    <String fx:value="13:00"/><String fx:value="14:00"/><String fx:value="15:00"/>
+                </FXCollections>
+            </items>
+        </ComboBox>
+    </HBox>
+
+    <HBox spacing="10">
+        <Button text="Modifier" onAction="#modifierRdv"/>
+        <Button text="Retour" onAction="#retour"/>
+    </HBox>
+</VBox>

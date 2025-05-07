@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="RendezVousController" fx:id="rootPane">
+
+
+
+    <center>
+        <VBox spacing="15" alignment="CENTER">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+
+
+            <Label text="📅 Gestion des Rendez-vous" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+            <HBox spacing="10">
+                <Button text="Créer RDV" onAction="#ouvrirFormulaireAjout"/>
+                <Button text="Modifier RDV" onAction="#ouvrirFormulaireModification"/>
+                <Button text="Annuler RDV" onAction="#annulerRdv"/>
+                <Button text="🔄 Rafraîchir" onAction="#rafraichirTableau"/>
+
+            </HBox>
+
+            <TableView fx:id="tableRdv" prefHeight="300">
+                <columns>
+                    <TableColumn fx:id="idCol" text="ID"/>
+                    <TableColumn fx:id="patientCol" text="Patient"/>
+                    <TableColumn fx:id="medecinCol" text="Médecin"/>
+                    <TableColumn fx:id="dateCol" text="Date/Heure"/>
+                    <TableColumn fx:id="motifCol" text="Motif"/>
+                    <TableColumn fx:id="statutCol" text="Statut"/>
+                </columns>
+            </TableView>
+
+            <Button text="⬅ Retour au menu" onAction="#retourMenu" alignment="CENTER_LEFT" />
+        </VBox>
+    </center>
+</BorderPane>

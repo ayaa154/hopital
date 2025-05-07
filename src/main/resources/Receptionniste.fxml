@@ -58,6 +58,8 @@
             <Button text="Ajouter Patient" onAction="#ajouterPatient"/>
             <Button text="Supprimer Patient" onAction="#supprimerPatient"/>
             <Button text="Rafraîchir" onAction="#rafraichirListe"/>
+            <Button text="🔙 Retour au menu" onAction="#retourMenu" prefWidth="150" />
+
 
         </HBox>
     </bottom>

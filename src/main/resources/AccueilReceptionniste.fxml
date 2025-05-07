@@ -9,7 +9,8 @@
         <VBox spacing="20" alignment="CENTER" style="-fx-padding: 50;">
             <Label text="🧾 Menu Réceptionniste"
                    style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
-            <Button text="👤 Gérer les patients" onAction="#ouvrirGestionPatients" prefWidth="200"/>
+            <Button fx:id="btnGestionPatients" text="👤 Gérer les patients" onAction="#ouvrirGestionPatients" prefWidth="200"/>
+
             <Button text="📅 Gérer les rendez-vous" onAction="#ouvrirGestionRdv" prefWidth="200"/>
             <Button text="🗓️ Gérer le planning" onAction="#ouvrirPlanning" prefWidth="200"/>
         </VBox>
