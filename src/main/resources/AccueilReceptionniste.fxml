@@ -4,7 +4,12 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="AccueilReceptionnisteController">
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="AccueilReceptionnisteController"
+            fx:id="accueilRoot"
+            stylesheets="@acceuil.css"
+            prefWidth="700" prefHeight="500">
+
     <center>
         <VBox spacing="20" alignment="CENTER" style="-fx-padding: 50;">
             <Label text="🧾 Menu Réceptionniste"
@@ -12,7 +17,7 @@
             <Button fx:id="btnGestionPatients" text="👤 Gérer les patients" onAction="#ouvrirGestionPatients" prefWidth="200"/>
 
             <Button text="📅 Gérer les rendez-vous" onAction="#ouvrirGestionRdv" prefWidth="200"/>
-            <Button text="🗓️ Gérer le planning" onAction="#ouvrirPlanning" prefWidth="200"/>
+            <Button text="📅  Gérer le planning" onAction="#ouvrirPlanning" prefWidth="200"/>
             <Button text="🚪 Se déconnecter" onAction="#seDeconnecter" prefWidth="200"
                     style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
 

@@ -3,9 +3,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="ReceptionnisteController"
+            fx:id="rootPane"
+            stylesheets="@stylereceptionniiste.css"
+            prefWidth="900" prefHeight="600">
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="ReceptionnisteController"
-            style="-fx-background-color: #f0f8ff;"> <!-- Fond bleu clair -->
 
     <!-- Titre principal -->
     <top>

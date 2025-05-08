@@ -1,0 +1,6 @@
+#rootPane {
+    -fx-background-image: url("images/backgroundreceptioniste.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+}

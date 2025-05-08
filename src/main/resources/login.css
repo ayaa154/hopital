@@ -1,0 +1,6 @@
+#loginPane {
+    -fx-background-image: url("images/login.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+}

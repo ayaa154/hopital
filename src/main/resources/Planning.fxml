@@ -3,7 +3,12 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<BorderPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml" fx:controller="PlanningController">
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="PlanningController"
+            fx:id="rootPane"
+            stylesheets="@stylereceptionniiste.css"
+            prefWidth="700" prefHeight="700">
+
 
     <top>
 

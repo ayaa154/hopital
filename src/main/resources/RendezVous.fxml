@@ -4,8 +4,12 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="RendezVousController" fx:id="rootPane"
-            style="-fx-background-color: #f0f8ff;"> <!-- fond bleu clair -->
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="RendezVousController"
+            fx:id="rootPane"
+            stylesheets="@stylereceptionniiste.css"
+            prefWidth="850" prefHeight="600">
+<!-- fond bleu clair -->
 
     <center>
         <VBox spacing="20" alignment="CENTER" style="-fx-padding: 30;">
