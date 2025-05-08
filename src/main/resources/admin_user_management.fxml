@@ -5,7 +5,8 @@
 
 <AnchorPane fx:controller="AdminUserManagementController" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <!-- TableView -->
+
+        <!-- Table des utilisateurs -->
         <TableView fx:id="table" layoutX="20" layoutY="20" prefWidth="600" prefHeight="400">
             <columns>
                 <TableColumn fx:id="idColumn" text="ID" prefWidth="100" />
@@ -16,11 +17,17 @@
             </columns>
         </TableView>
 
-        <!-- Buttons -->
+        <!-- Boutons principaux -->
         <HBox spacing="20" alignment="CENTER" layoutX="20" layoutY="440">
             <Button fx:id="addBtn" text="Ajouter" onAction="#handleAdd" />
             <Button fx:id="editBtn" text="Modifier" onAction="#handleEdit" />
             <Button fx:id="deleteBtn" text="Supprimer" onAction="#handleDelete" />
         </HBox>
+
+
+
+        <!-- Bouton déconnexion -->
+        <Button text="Se déconnecter" layoutX="500" layoutY="500" onAction="#seDeconnecter"/>
+
     </children>
 </AnchorPane>

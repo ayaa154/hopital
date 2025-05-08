@@ -22,7 +22,8 @@ public class UserDialog {
         Label emailLabel = new Label("Email:");
         TextField emailField = new TextField();
         Label roleLabel = new Label("Rôle:");
-        TextField roleField = new TextField();
+        ComboBox<String> roleComboBox = new ComboBox<>();
+        roleComboBox.getItems().addAll("admin", "medecin", "receptionniste", "patient");
         Label motDePasseLabel = new Label("Mot de passe:");
         PasswordField motDePasseField = new PasswordField();
 
@@ -30,8 +31,7 @@ public class UserDialog {
             nomField.setText(userToEdit.getNom());
             prenomField.setText(userToEdit.getPrenom());
             emailField.setText(userToEdit.getEmail());
-            roleField.setText(userToEdit.getRole());
-            // Ne pas pré-remplir le mot de passe pour la sécurité
+            roleComboBox.setValue(userToEdit.getRole()); // liste déroulante
         }
 
         GridPane grid = new GridPane();
@@ -40,7 +40,7 @@ public class UserDialog {
         grid.add(nomLabel, 0, 0); grid.add(nomField, 1, 0);
         grid.add(prenomLabel, 0, 1); grid.add(prenomField, 1, 1);
         grid.add(emailLabel, 0, 2); grid.add(emailField, 1, 2);
-        grid.add(roleLabel, 0, 3); grid.add(roleField, 1, 3);
+        grid.add(roleLabel, 0, 3); grid.add(roleComboBox, 1, 3);
         grid.add(motDePasseLabel, 0, 4); grid.add(motDePasseField, 1, 4);
 
         dialog.getDialogPane().setContent(grid);
@@ -53,7 +53,7 @@ public class UserDialog {
                         nomField.getText(),
                         prenomField.getText(),
                         emailField.getText(),
-                        roleField.getText(),
+                        roleComboBox.getValue(),
                         motDePasseField.getText()
                 );
             }
@@ -65,7 +65,6 @@ public class UserDialog {
             try {
                 if (isEdit) {
                     if (user.getMotDePasse() == null || user.getMotDePasse().isEmpty()) {
-                        // Pas de mise à jour du mot de passe
                         String query = "UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, role = ? WHERE id = ?";
                         try (PreparedStatement stmt = connection.prepareStatement(query)) {
                             stmt.setString(1, user.getNom());
@@ -76,7 +75,6 @@ public class UserDialog {
                             stmt.executeUpdate();
                         }
                     } else {
-                        // Mise à jour avec un nouveau mot de passe haché
                         String hashed = hashPassword(user.getMotDePasse());
                         String query = "UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, role = ?, mot_de_passe = ? WHERE id = ?";
                         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -111,7 +109,6 @@ public class UserDialog {
         });
     }
 
-    // Hachage SHA-256
     private static String hashPassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");

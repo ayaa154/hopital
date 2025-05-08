@@ -65,6 +65,10 @@ public class ConnexionController {
                 loadAndShowView("admin_user_management.fxml", "Gestion Utilisateurs (Admin)", null);
                 break;
 
+            case "medecin":
+                loadAndShowView("medecin_dashboard.fxml", "Tableau de bord Médecin", null);
+                break;
+
             default:
                 showAlert("Rôle non pris en charge.");
                 return;

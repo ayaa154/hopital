@@ -12,6 +12,17 @@ public class User {
     private final StringProperty role;
     private final StringProperty motDePasse;
 
+    // Constructeur vide requis par JavaFX ou l'initialisation sans données
+    public User() {
+        this.id = new SimpleIntegerProperty();
+        this.nom = new SimpleStringProperty();
+        this.prenom = new SimpleStringProperty();
+        this.email = new SimpleStringProperty();
+        this.role = new SimpleStringProperty();
+        this.motDePasse = new SimpleStringProperty();
+    }
+
+
     // Constructeur
     public User(int id, String nom, String prenom, String email, String role, String motDePasse) {
         this.id = new SimpleIntegerProperty(id);

@@ -2,9 +2,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.Optional;
 
@@ -16,6 +23,10 @@ public class AdminUserManagementController {
     @FXML private TableColumn<User, String> prenomColumn;
     @FXML private TableColumn<User, String> emailColumn;
     @FXML private TableColumn<User, String> roleColumn;
+
+
+
+
     // (Optionnel) Colonne mot de passe
     // @FXML private TableColumn<User, String> motDePasseColumn;
 
@@ -31,6 +42,8 @@ public class AdminUserManagementController {
         prenomColumn.setCellValueFactory(new PropertyValueFactory<>("prenom"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         roleColumn.setCellValueFactory(new PropertyValueFactory<>("role"));
+
+
         // motDePasseColumn.setCellValueFactory(new PropertyValueFactory<>("motDePasse")); // optionnel
 
         connectToDatabase();
@@ -68,22 +81,127 @@ public class AdminUserManagementController {
         }
     }
 
+
     @FXML
     private void handleAdd(ActionEvent event) {
-        UserDialog.showUserDialog(false, connection, null);
-        loadUsers();
+        ouvrirFormulaireUtilisateur(false, null);
     }
 
     @FXML
     private void handleEdit(ActionEvent event) {
         User selectedUser = table.getSelectionModel().getSelectedItem();
         if (selectedUser == null) {
-            showError("Sélectionnez un utilisateur à modifier.");
+            showError("Sélectionnez un utilisateur.");
             return;
         }
-        UserDialog.showUserDialog(true, connection, selectedUser);
-        loadUsers();
+        ouvrirFormulaireUtilisateur(true, selectedUser);
     }
+
+    private void ouvrirFormulaireUtilisateur(boolean edit, User user) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserForm.fxml"));
+            Parent root = loader.load();
+
+            UserFormController controller = loader.getController();
+            controller.setUser(user, edit, (savedUser, isEdit) -> {
+                // Tu peux ici sauvegarder vers la base avec hash mot de passe si nécessaire
+                if (isEdit) {
+                    updateUserInDatabase(savedUser);
+                } else {
+                    insertUserIntoDatabase(savedUser);
+                }
+                loadUsers(); // refresh
+            });
+
+            Stage stage = new Stage();
+            stage.setTitle(edit ? "Modifier Utilisateur" : "Ajouter Utilisateur");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("Erreur lors de l’ouverture du formulaire.");
+        }
+    }
+    private String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hash = md.digest(password.getBytes(StandardCharsets.UTF_8));
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Erreur de hachage", e);
+        }
+    }
+    private void insertUserIntoDatabase(User user) {
+        String sql = "INSERT INTO utilisateurs (nom, prenom, email, role, mot_de_passe) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, user.getNom());
+            stmt.setString(2, user.getPrenom());
+            stmt.setString(3, user.getEmail());
+            stmt.setString(4, user.getRole());
+            stmt.setString(5, hashPassword(user.getMotDePasse()));
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            showError("Erreur lors de l'ajout : " + e.getMessage());
+        }
+    }
+    private void updateUserInDatabase(User user) {
+        try {
+            String sql;
+            if (user.getMotDePasse() == null || user.getMotDePasse().isEmpty()) {
+                sql = "UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, role = ? WHERE id = ?";
+            } else {
+                sql = "UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, role = ?, mot_de_passe = ? WHERE id = ?";
+            }
+
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setString(1, user.getNom());
+                stmt.setString(2, user.getPrenom());
+                stmt.setString(3, user.getEmail());
+                stmt.setString(4, user.getRole());
+
+                if (user.getMotDePasse() == null || user.getMotDePasse().isEmpty()) {
+                    stmt.setInt(5, user.getId());
+                } else {
+                    stmt.setString(5, hashPassword(user.getMotDePasse()));
+                    stmt.setInt(6, user.getId());
+                }
+
+                stmt.executeUpdate();
+            }
+
+        } catch (SQLException e) {
+            showError("Erreur lors de la mise à jour : " + e.getMessage());
+        }
+    }
+
+
+
+
+
+
+    @FXML
+    private void seDeconnecter() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Connexion.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) table.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Connexion");
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("Erreur lors de la déconnexion.");
+        }
+    }
+
+
+
 
     @FXML
     private void handleDelete(ActionEvent event) {
