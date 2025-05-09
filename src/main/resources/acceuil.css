@@ -1,43 +1,63 @@
+/* --------- ARRIÈRE-PLAN --------- */
 #accueilRoot {
     -fx-background-image: url("images/2.jpeg");
     -fx-background-size: cover;
     -fx-background-position: center center;
     -fx-background-repeat: no-repeat;
 }
+
+/* --------- POLICE GÉNÉRALE --------- */
+.root {
+    -fx-font-family: 'Segoe UI', 'Segoe UI Emoji', 'Arial Unicode MS', 'Noto Color Emoji', sans-serif;
+}
+
+/* --------- BOUTONS BLEUS --------- */
+.blue-button {
+    -fx-background-color: #64b5f6;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-padding: 10 20;
+    -fx-font-size: 14px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 2, 0.1, 0, 1);
+    -fx-cursor: hand;
+}
+
+.blue-button:hover {
+    -fx-background-color: #90caf9; /* bleu plus doux */
+}
+
+
+/* --------- BOUTON ROUGE --------- */
+.red-button {
+    -fx-background-color: #ef5350;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-padding: 10 20;
+    -fx-font-size: 14px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 2, 0.1, 0, 1);
+    -fx-cursor: hand;
+}
+
+.red-button:hover {
+    -fx-background-color: #e57373; /* rouge clair doux */
+}
+
+/* --------- STYLING PAR DÉFAUT DES BOUTONS (.button) --------- */
 .button {
-    -fx-background-color: #ffffff;
     -fx-border-color: #ced6e0;
     -fx-border-radius: 10;
     -fx-background-radius: 10;
-    -fx-text-fill: #2f3542;
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 5, 0, 0, 1);
-    -fx-cursor: hand;
-    -fx-padding: 8 16;
     -fx-transition: all 0.3s;
 }
 
 .button:hover {
-    -fx-background-color: #f1f2f6;
     -fx-border-color: #a4b0be;
     -fx-text-fill: #1e90ff;
 }
 
 .button:pressed {
     -fx-background-color: #dcdde1;
-}
-
-/* Style spécifique pour le bouton de déconnexion */
-.button-red {
-    -fx-background-color: #e74c3c;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-background-radius: 10;
-    -fx-border-radius: 10;
-    -fx-cursor: hand;
-}
-
-.button-red:hover {
-    -fx-background-color: #c0392b;
 }

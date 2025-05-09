@@ -1,17 +1,12 @@
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.*;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.VBox;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 
 public class DossierMedicalController {
 
@@ -51,8 +46,7 @@ public class DossierMedicalController {
             String query = "SELECT c.date_consultation, c.diagnostic, c.traitement, u.nom AS medecin_nom, u.prenom AS medecin_prenom " +
                     "FROM consultations c " +
                     "JOIN dossiers_medicaux d ON c.dossier_id = d.id " +
-                    "JOIN medecins m ON c.medecin_id = m.id " +
-                    "JOIN utilisateurs u ON m.id = u.id " +
+                    "JOIN utilisateurs u ON c.medecin_id = u.id " +
                     "WHERE d.patient_id = ?";
             PreparedStatement ps = con.prepareStatement(query);
             ps.setInt(1, userId);

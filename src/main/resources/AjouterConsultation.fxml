@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="ConsultationFormController"
+      spacing="15" alignment="TOP_CENTER"
+      style="
+          -fx-padding: 20;
+          -fx-background-image: url('images/bgmed.jpg');
+          -fx-background-size: cover;
+          -fx-background-position: center;
+          -fx-background-repeat: no-repeat;
+      ">
+
+    <Label text="Ajouter une Consultation"
+           style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+    <Label text="Diagnostic:"/>
+    <TextArea fx:id="tfDiagnostic" prefRowCount="3" wrapText="true"/>
+
+    <Label text="Traitement:"/>
+    <TextArea fx:id="tfTraitement" prefRowCount="3" wrapText="true"/>
+
+    <Label text="Notes (optionnel):"/>
+    <TextArea fx:id="taNotes" prefRowCount="2" wrapText="true"/>
+
+    <HBox spacing="10">
+        <Button fx:id="btnAjouterConsultation" text="Enregistrer" onAction="#ajouterConsultation"
+                style="
+                    -fx-background-color: linear-gradient(to bottom right, #4facfe, #00f2fe);
+                    -fx-text-fill: white;
+                    -fx-background-radius: 8;
+                    -fx-padding: 8 20;
+                "/>
+
+        <Button text="Annuler" onAction="#annuler"
+                style="
+                    -fx-background-color: linear-gradient(to bottom right, #eeeeee, #cccccc);
+                    -fx-text-fill: #333333;
+                    -fx-background-radius: 8;
+                    -fx-padding: 8 20;
+                "/>
+    </HBox>
+
+</VBox>

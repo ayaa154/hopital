@@ -56,12 +56,15 @@ public class UserFormController {
         callback.onUserSaved(user, editMode);
 
         ((Stage) nomField.getScene().getWindow()).close();
+        callback.onUserSaved(user, editMode);
     }
 
     @FXML
-    public void handleCancel() {
-        ((Stage) nomField.getScene().getWindow()).close();
+    public void handleRetour() {
+        // Juste fermer le formulaire et ne rien faire
+        callback.onUserSaved(null, editMode); // signaler un retour sans sauvegarde
     }
+
 
     private void showAlert(String message) {
         new Alert(Alert.AlertType.WARNING, message, ButtonType.OK).showAndWait();

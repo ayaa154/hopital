@@ -1,0 +1,21 @@
+.text-field, .password-field, .combo-box {
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
+    -fx-background-color: white;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 6 10;
+}
+
+.label {
+    -fx-text-fill: #003366; /* Bleu foncé */
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+#titleLabel {
+    -fx-font-size: 20px;
+    -fx-text-fill: #003366;
+    -fx-font-weight: bold;
+}

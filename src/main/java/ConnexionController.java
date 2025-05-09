@@ -66,7 +66,9 @@ public class ConnexionController {
                 break;
 
             case "medecin":
-                loadAndShowView("medecin_dashboard.fxml", "Tableau de bord Médecin", null);
+                FXMLLoader loaderMedecin = loadAndShowView("medecin_dashboard.fxml", "Tableau de bord Médecin", null);
+                MedecinDashboardController medecinController = loaderMedecin.getController();
+                medecinController.setMedecinId(userId); // << C’est ici qu’on passe l’ID
                 break;
 
             default:

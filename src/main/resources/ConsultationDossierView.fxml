@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="ConsultationDossierController"
+      spacing="15" alignment="TOP_CENTER"
+      style="-fx-padding: 20; -fx-background-color: #E3F2FD;">
+
+    <Label text="📁 Dossier Médical du Patient"
+           style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #0D47A1;" />
+
+    <Label fx:id="noRecordsLabel" text=""
+           style="-fx-font-size: 14px; -fx-text-fill: red;" />
+
+    <TableView fx:id="tableDossierMedical" prefHeight="200" prefWidth="600"
+               style="-fx-background-color: white; -fx-border-color: #90CAF9; -fx-border-radius: 5;">
+        <columns>
+            <TableColumn fx:id="colDateConsultation" text="Date" prefWidth="120"/>
+            <TableColumn fx:id="colDiagnostic" text="Diagnostic" prefWidth="150"/>
+            <TableColumn fx:id="colTraitement" text="Traitement" prefWidth="150"/>
+            <TableColumn fx:id="colMedecin" text="Médecin" prefWidth="150"/>
+        </columns>
+    </TableView>
+
+</VBox>

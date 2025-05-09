@@ -1,33 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.Pos?>
+<?import javafx.geometry.*?>
 
-<AnchorPane fx:controller="AdminUserManagementController" xmlns:fx="http://javafx.com/fxml/1">
-    <children>
+<BorderPane fx:id="rootAdminPane" fx:controller="AdminUserManagementController" xmlns:fx="http://javafx.com/fxml/1"
+            style="-fx-background-image: url('images/admine.jpg'); -fx-background-size: cover;" prefWidth="900" prefHeight="600">
+    <top>
+        <Label text="👤 Gestion des Utilisateurs"
+               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #003366;" BorderPane.alignment="CENTER"/>
+    </top>
 
-        <!-- Table des utilisateurs -->
-        <TableView fx:id="table" layoutX="20" layoutY="20" prefWidth="600" prefHeight="400">
-            <columns>
-                <TableColumn fx:id="idColumn" text="ID" prefWidth="100" />
-                <TableColumn fx:id="nomColumn" text="Nom" prefWidth="150" />
-                <TableColumn fx:id="prenomColumn" text="Prénom" prefWidth="150" />
-                <TableColumn fx:id="emailColumn" text="Email" prefWidth="200" />
-                <TableColumn fx:id="roleColumn" text="Rôle" prefWidth="150" />
-            </columns>
-        </TableView>
+    <center>
+        <VBox spacing="20" alignment="CENTER">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
 
-        <!-- Boutons principaux -->
-        <HBox spacing="20" alignment="CENTER" layoutX="20" layoutY="440">
-            <Button fx:id="addBtn" text="Ajouter" onAction="#handleAdd" />
-            <Button fx:id="editBtn" text="Modifier" onAction="#handleEdit" />
-            <Button fx:id="deleteBtn" text="Supprimer" onAction="#handleDelete" />
-        </HBox>
+            <TableView fx:id="table" prefWidth="750" prefHeight="400">
+                <columns>
+                    <TableColumn fx:id="idColumn" text="ID" prefWidth="80"/>
+                    <TableColumn fx:id="nomColumn" text="Nom" prefWidth="150"/>
+                    <TableColumn fx:id="prenomColumn" text="Prénom" prefWidth="150"/>
+                    <TableColumn fx:id="emailColumn" text="Email" prefWidth="200"/>
+                    <TableColumn fx:id="roleColumn" text="Rôle" prefWidth="150"/>
+                </columns>
+            </TableView>
 
+            <HBox spacing="20" alignment="CENTER">
+                <Button fx:id="addBtn" text="➕ Ajouter" onAction="#handleAdd"/>
+                <Button fx:id="editBtn" text="✏️ Modifier" onAction="#handleEdit"/>
+                <Button fx:id="deleteBtn" text="❌ Supprimer" onAction="#handleDelete"/>
+            </HBox>
 
+            <Button text="🚪 Se déconnecter" onAction="#seDeconnecter"/>
+        </VBox>
+    </center>
+</BorderPane>
 
-        <!-- Bouton déconnexion -->
-        <Button text="Se déconnecter" layoutX="500" layoutY="500" onAction="#seDeconnecter"/>
-
-    </children>
-</AnchorPane>

@@ -3,12 +3,15 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -23,7 +26,40 @@ public class AdminUserManagementController {
     @FXML private TableColumn<User, String> prenomColumn;
     @FXML private TableColumn<User, String> emailColumn;
     @FXML private TableColumn<User, String> roleColumn;
+    private Node mainContent;
 
+    @FXML
+    private BorderPane rootAdminPane;
+
+    @FXML
+    private void handleAdd() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserForm.fxml"));
+            Parent form = loader.load();
+
+            UserFormController controller = loader.getController();
+
+            mainContent = rootAdminPane.getCenter();
+            Node topContent = rootAdminPane.getTop(); // <- sauvegarde le top
+
+            rootAdminPane.setTop(null); // <- cache le titre
+
+            controller.setUser(null, false, (savedUser, isEdit) -> {
+                if (savedUser != null) {
+                    insertUserIntoDatabase(savedUser);
+                    loadUsers();
+                }
+                rootAdminPane.setCenter(mainContent);
+                rootAdminPane.setTop(topContent); // <- restaure le titre
+            });
+
+            rootAdminPane.setCenter(form);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("Erreur lors de l'ajout de l'utilisateur.");
+        }
+    }
 
 
 
@@ -82,19 +118,47 @@ public class AdminUserManagementController {
     }
 
 
-    @FXML
-    private void handleAdd(ActionEvent event) {
-        ouvrirFormulaireUtilisateur(false, null);
-    }
 
     @FXML
-    private void handleEdit(ActionEvent event) {
-        User selectedUser = table.getSelectionModel().getSelectedItem();
-        if (selectedUser == null) {
+    private void handleEdit() {
+        User selected = table.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            chargerFormulaireUtilisateur(true, selected);
+        } else {
             showError("Sélectionnez un utilisateur.");
-            return;
         }
-        ouvrirFormulaireUtilisateur(true, selectedUser);
+    }
+    private void chargerFormulaireUtilisateur(boolean edit, User user) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserForm.fxml"));
+            Parent form = loader.load();
+
+            UserFormController controller = loader.getController();
+            mainContent = rootAdminPane.getCenter();       // sauvegarde la vue principale
+            Node topContent = rootAdminPane.getTop();      // sauvegarde le titre
+
+            rootAdminPane.setTop(null);                    // cache le titre
+            rootAdminPane.setCenter(form);                 // affiche le formulaire
+
+            controller.setUser(user, edit, (savedUser, isEdit) -> {
+                if (savedUser == null) {
+                    rootAdminPane.setCenter(mainContent);  // retour sans enregistrement
+                    rootAdminPane.setTop(topContent);      // restaure le titre
+                    return;
+                }
+
+                if (isEdit) updateUserInDatabase(savedUser);
+                else insertUserIntoDatabase(savedUser);
+
+                loadUsers();
+                rootAdminPane.setCenter(mainContent);      // retourne à la table
+                rootAdminPane.setTop(topContent);          // restaure le titre
+            });
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showError("Erreur ouverture du formulaire.");
+        }
     }
 
     private void ouvrirFormulaireUtilisateur(boolean edit, User user) {

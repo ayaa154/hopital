@@ -2,18 +2,41 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
 
-<VBox spacing="10" xmlns:fx="http://javafx.com/fxml" fx:controller="UserFormController" style="-fx-padding: 20;">
-    <Label fx:id="titleLabel" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="UserFormController"
+            style="-fx-padding: 40;" prefWidth="700" prefHeight="500"
+            stylesheets="@userform.css">
+    <center>
+        <VBox spacing="30" alignment="CENTER">
+            <Label fx:id="titleLabel" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #003366;" />
 
-    <TextField fx:id="nomField" promptText="Nom" />
-    <TextField fx:id="prenomField" promptText="Prénom" />
-    <TextField fx:id="emailField" promptText="Email" />
-    <ComboBox fx:id="roleCombo" promptText="Rôle" />
-    <PasswordField fx:id="passwordField" promptText="Mot de passe" />
+            <GridPane hgap="20" vgap="15">
+                <padding><Insets top="10" left="30" right="30" bottom="10"/></padding>
 
-    <HBox spacing="10" alignment="CENTER_RIGHT">
-        <Button text="Annuler" onAction="#handleCancel" />
-        <Button text="Enregistrer" onAction="#handleSave" />
-    </HBox>
-</VBox>
+                <Label text="Nom:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                <TextField fx:id="nomField" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                <Label text="Prénom:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                <TextField fx:id="prenomField" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                <Label text="Email:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                <TextField fx:id="emailField" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+                <Label text="Rôle:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                <ComboBox fx:id="roleCombo" promptText="Rôle" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+                <Label text="Mot de passe:" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+                <PasswordField fx:id="passwordField" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+            </GridPane>
+
+            <HBox spacing="20" alignment="CENTER">
+                <Button text="⬅ Retour" onAction="#handleRetour"
+                        style="-fx-background-color: #6c757d; -fx-text-fill: white;" />
+                <Button text="💾 Enregistrer" onAction="#handleSave"
+                        style="-fx-background-color: #28a745; -fx-text-fill: white;" />
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

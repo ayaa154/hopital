@@ -1,0 +1,67 @@
+.root {
+    -fx-background-image: url("/1.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+    -fx-opacity: 0.95;
+}
+
+/* Menu vertical */
+.vbox-menu {
+    -fx-background-color: rgba(255, 255, 255, 0.85); /* blanc semi-transparent */
+    -fx-background-radius: 15;
+    -fx-padding: 20;
+    -fx-spacing: 15;
+}
+
+/* Boutons du menu */
+.vbox-menu .button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-background-radius: 8;
+    -fx-padding: 10 15;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0.0, 2, 2);
+    -fx-transition: all 0.3s ease;
+}
+
+.vbox-menu .button:hover {
+    -fx-background-color: #2980b9;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+
+
+.menu-button, .menu-button-selected {
+    -fx-font-size: 16px;
+    -fx-background-radius: 8;
+    -fx-text-fill: white;
+    -fx-pref-width: 180;
+    -fx-padding: 10;
+}
+
+.menu-button {
+    -fx-background-color: #4c8cff;
+}
+
+.menu-button-selected {
+    -fx-background-color: #2a6eff;
+    -fx-font-weight: bold;
+    -fx-border-color: white;
+    -fx-border-width: 2;
+}
+
+.back-button {
+    -fx-background-color: #4c8cff;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-background-radius: 8;
+}
+
+.prescription-table {
+    -fx-background-color: rgba(255, 255, 255, 0.9);
+    -fx-border-radius: 10;
+    -fx-padding: 10;
+}

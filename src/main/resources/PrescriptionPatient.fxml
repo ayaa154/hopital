@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="PrescriptionPatientController"
+           stylesheets="@stylepr.css"
+           fx:id="root">
+
+    <BorderPane>
+
+        <!-- Menu vertical -->
+        <left>
+            <VBox spacing="15" style="-fx-background-color: rgba(58, 108, 194, 0.7); -fx-padding: 30;">
+                <Button text="Mes Rendez-vous" onAction="#handleRendezVous" styleClass="menu-button"/>
+                <Button text="Mon Profil" onAction="#handleProfil" styleClass="menu-button"/>
+                <Button text="Dossier Médical" onAction="#handleDossier" styleClass="menu-button"/>
+                <Button text="Prescriptions" styleClass="menu-button-selected"/>
+            </VBox>
+        </left>
+
+        <!-- Haut avec bouton retour + titre -->
+        <top>
+            <HBox spacing="20" alignment="CENTER_LEFT" style="-fx-padding: 20;">
+                <Button text="⟵ Retour" onAction="#handleRetour" styleClass="back-button"/>
+                <Label text="Mes Prescriptions" style="-fx-font-size: 24px; -fx-text-fill: white; -fx-font-weight: bold;"/>
+            </HBox>
+        </top>
+
+        <!-- Centre avec la table des prescriptions -->
+        <center>
+            <VBox alignment="CENTER" spacing="20" style="-fx-padding: 30;">
+                <TableView fx:id="prescriptionTable" prefWidth="750" styleClass="prescription-table">
+                    <columns>
+                        <TableColumn fx:id="medicamentCol" text="Médicament" prefWidth="150"/>
+                        <TableColumn fx:id="posologieCol" text="Posologie" prefWidth="250"/>
+                        <TableColumn fx:id="dureeCol" text="Durée" prefWidth="100"/>
+                        <TableColumn fx:id="dateCol" text="Date" prefWidth="100"/>
+                        <TableColumn fx:id="medecinCol" text="Médecin" prefWidth="150"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </center>
+
+    </BorderPane>
+</StackPane>

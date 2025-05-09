@@ -5,8 +5,13 @@
 <?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="AjoutRdvController"
-            style="-fx-background-color: #f0f8ff;">
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="AjoutRdvController"
+            fx:id="ajoutRdvRoot"
+            stylesheets="@stylereceptionniiste.css"
+            prefWidth="900" prefHeight="600"
+            style="-fx-background-size: cover;">
+
 
     <center>
         <VBox spacing="20" alignment="CENTER" style="-fx-padding: 30;">

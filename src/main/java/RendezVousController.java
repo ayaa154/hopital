@@ -93,7 +93,9 @@ public class RendezVousController {
             AjoutRdvController controller = loader.getController();
             controller.setRendezVousController(this);
 
+            // Supprimer le contenu complet (top, center, bottom)
             rootPane.setTop(null);
+            rootPane.setBottom(null); // <--- AJOUTE CETTE LIGNE ICI
             rootPane.setCenter(formAjout);
         } catch (Exception e) {
             afficherMessage("❌ Erreur ouverture formulaire ajout.", true);
@@ -111,6 +113,7 @@ public class RendezVousController {
 
             // Remplacer seulement le contenu central, garder le top et bottom
             rootPane.setCenter(modificationForm);
+
             rootPane.setBottom(null); // Masque le bouton "Retour au menu"
 
         } catch (Exception e) {

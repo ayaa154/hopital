@@ -6,68 +6,71 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.DatePicker?>
 
-<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ProfilPatientController">
+<StackPane xmlns="http://javafx.com/javafx/11.0.1"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="ProfilPatientController"
+           stylesheets="@stylepr.css">
 
-    <!-- Menu vertical à gauche -->
-    <left>
-        <VBox spacing="20" style="-fx-background-color: #3a6cc2; -fx-padding: 30; -fx-border-radius: 10;">
-            <Button text="Mes Rendez-vous" style="-fx-background-color: #4c8cff; -fx-text-fill: white; -fx-font-size: 18; -fx-background-radius: 10; -fx-padding: 10;" onAction="#handleRendezVousButton"/>
-            <Button text="Mon Profil" style="-fx-background-color: #4c8cff; -fx-text-fill: white; -fx-font-size: 18; -fx-background-radius: 10; -fx-padding: 10;" onAction="#handleProfilButton"/>
-            <Button text="Dossier Médical" style="-fx-background-color: #4c8cff; -fx-text-fill: white; -fx-font-size: 18; -fx-background-radius: 10; -fx-padding: 10;" onAction="#handleDossierButton"/>
-        </VBox>
-    </left>
+    <BorderPane fx:id="rootPane">
 
-    <!-- Section supérieure avec le titre -->
-    <top>
-        <HBox style="-fx-background-color: #2a4c9c; -fx-padding: 20;">
-            <Label text="Profil Patient" style="-fx-text-fill: white; -fx-font-size: 22; -fx-font-weight: bold;"/>
-        </HBox>
-    </top>
+        <!-- Menu vertical à gauche -->
+        <left>
+            <VBox spacing="20" style="-fx-padding: 30;">
+                <Button text="Mes Rendez-vous" style="-fx-background-color: #4c8cff; -fx-text-fill: white; -fx-font-size: 18; -fx-background-radius: 10; -fx-padding: 10;" onAction="#handleRendezVousButton"/>
+                <Button text="Mon Profil" style="-fx-background-color: #4c8cff; -fx-text-fill: white; -fx-font-size: 18; -fx-background-radius: 10; -fx-padding: 10;" onAction="#handleProfilButton"/>
+                <Button text="Dossier Médical" style="-fx-background-color: #4c8cff; -fx-text-fill: white; -fx-font-size: 18; -fx-background-radius: 10; -fx-padding: 10;" onAction="#handleDossierButton"/>
+                <Button text="Prescriptions" style="-fx-background-color: #4c8cff; -fx-text-fill: white; -fx-font-size: 18; -fx-background-radius: 10; -fx-padding: 10;" onAction="#handlePrescriptionButton"/>
 
-    <!-- Section centrale avec le contenu du profil -->
-    <center>
-        <VBox spacing="20" alignment="CENTER" style="-fx-padding: 30;">
-            <GridPane hgap="10" vgap="15">
-                <columnConstraints>
-                    <ColumnConstraints halignment="RIGHT" minWidth="100"/>
-                    <ColumnConstraints halignment="LEFT" minWidth="200"/>
-                </columnConstraints>
+            </VBox>
+        </left>
 
-                <!-- Informations personnelles -->
-                <Label text="Informations Personnelles:" GridPane.columnIndex="0" GridPane.rowIndex="0"
-                       style="-fx-font-weight: bold; -fx-font-size: 14;"/>
+        <!-- Section supérieure avec le titre -->
+        <top>
+            <HBox style="-fx-padding: 20;">
+                <Label text="Profil Patient" style="-fx-text-fill: white; -fx-font-size: 22; -fx-font-weight: bold;"/>
+            </HBox>
+        </top>
 
-                <!-- Nom -->
-                <Label text="Nom:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                <TextField fx:id="nomField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <!-- Section centrale avec le contenu du profil -->
+        <center>
+            <VBox fx:id="contenuProfil" spacing="20" alignment="CENTER" style="-fx-padding: 30;">
+                <GridPane hgap="10" vgap="15">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="RIGHT" minWidth="100"/>
+                        <ColumnConstraints halignment="LEFT" minWidth="200"/>
+                    </columnConstraints>
 
-                <!-- Prénom -->
-                <Label text="Prénom:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-                <TextField fx:id="prenomField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                    <!-- Informations personnelles -->
+                    <Label text="Informations Personnelles:" GridPane.columnIndex="0" GridPane.rowIndex="0"
+                           style="-fx-font-weight: bold; -fx-font-size: 14;"/>
 
-                <!-- Email -->
-                <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-                <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                    <Label text="Nom:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                    <TextField fx:id="nomField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
-                <!-- Date de naissance -->
-                <Label text="Date de naissance:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-                <DatePicker fx:id="dateNaissanceField" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                    <Label text="Prénom:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                    <TextField fx:id="prenomField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
-                <!-- Téléphone -->
-                <Label text="Téléphone:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-                <TextField fx:id="telephoneField" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                    <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                    <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 
-                <!-- Adresse -->
-                <Label text="Adresse:" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
-                <TextArea fx:id="adresseField" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
-            </GridPane>
-            <!-- Nouveau champ mot de passe -->
-            <Label text="Nouveau Mot de Passe:" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
-            <PasswordField fx:id="motDePasseField" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+                    <Label text="Date de naissance:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                    <DatePicker fx:id="dateNaissanceField" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
 
-            <!-- Bouton de modification -->
-            <Button text="Sauvegarder les modifications" fx:id="modifierButton"
-                    style="-fx-background-color: #2a9df4; -fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10; -fx-border-radius: 10;" onAction="#handleModifierButton"/>
-        </VBox>
-    </center>
-</BorderPane>
+                    <Label text="Téléphone:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                    <TextField fx:id="telephoneField" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
+                    <Label text="Adresse:" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+                    <TextArea fx:id="adresseField" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+                </GridPane>
+
+                <Label text="Nouveau Mot de Passe:"/>
+                <PasswordField fx:id="motDePasseField"/>
+
+                <Button text="Sauvegarder les modifications" fx:id="modifierButton"
+                        style="-fx-background-color: #2a9df4; -fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10; -fx-border-radius: 10;"
+                        onAction="#handleModifierButton"/>
+            </VBox>
+        </center>
+
+    </BorderPane>
+</StackPane>

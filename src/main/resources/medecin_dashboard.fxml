@@ -4,27 +4,42 @@
 <?import javafx.scene.layout.*?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="MedecinDashboardController">
+            fx:controller="MedecinDashboardController"
+            style="-fx-background-color: #2196F3;">
 
     <top>
-        <VBox spacing="10" alignment="CENTER" style="-fx-padding: 20;">
-            <!-- Titre principal avec emoji -->
-            <Label text="🗓️ Voici les rendez-vous de cette semaine :"
-                   style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+        <VBox spacing="10" alignment="CENTER"
+              style="-fx-padding: 20; -fx-background-color: #2196F3;">
+
+            <!-- Ligne avec bouton de déconnexion à droite -->
+            <HBox alignment="TOP_RIGHT" spacing="10">
+                <Region fx:id="spacer" HBox.hgrow="ALWAYS" />
+                <Button text="Se déconnecter" onAction="#seDeconnecter"
+                        style="-fx-background-color: #ff4d4d; -fx-text-fill: white;" />
+            </HBox>
 
             <!-- Message de bienvenue -->
             <Label fx:id="welcomeLabel"
+                   textFill="white"
                    style="-fx-font-size: 16px;" />
 
+            <!-- Titre principal avec emoji, placé après le message de bienvenue -->
+            <Label text="🗓️ Voici les rendez-vous de cette semaine :"
+                   textFill="white"
+                   style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+
             <!-- Bouton pour rafraîchir -->
-            <Button text="Rafraîchir" onAction="#rafraichirRendezvous" />
+            <Button text="Rafraîchir" onAction="#rafraichirRendezvous"
+                    style="-fx-background-color: #FF9800; -fx-text-fill: white;"/>
         </VBox>
     </top>
 
     <center>
-        <VBox spacing="10" alignment="CENTER" style="-fx-padding: 20;">
+        <VBox spacing="10" alignment="CENTER"
+              style="-fx-padding: 20; -fx-background-color: #2196F3;">
+
             <!-- Table des rendez-vous -->
-            <TableView fx:id="rendezvousTable">
+            <TableView fx:id="rendezvousTable" style="-fx-font-size: 14px;">
                 <columns>
                     <TableColumn fx:id="colPrenom" text="Prénom du patient" prefWidth="150"/>
                     <TableColumn fx:id="colNom" text="Nom du patient" prefWidth="150"/>
@@ -33,8 +48,16 @@
                 </columns>
             </TableView>
 
-            <!-- Bouton pour ajouter une prescription -->
-            <Button text="Ajouter Prescription" onAction="#ouvrirFenetrePrescription" />
+            <!-- Ligne avec trois boutons -->
+            <HBox spacing="10">
+                <Button text="Ajouter Consultation" onAction="#ouvrirFenetreConsultation"
+                        style="-fx-background-color: #4CAF50; -fx-text-fill: white;" />
+                <Button text="Ajouter Prescription" onAction="#ouvrirFenetrePrescription"
+                        style="-fx-background-color: #87CEEB; -fx-text-fill: white;" />
+                <Button text="Voir Dossier Médical" onAction="#voirDossierMedical"
+                        style="-fx-background-color: #FF9800; -fx-text-fill: white;" />
+            </HBox>
         </VBox>
     </center>
+
 </BorderPane>

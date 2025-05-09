@@ -1,6 +1,9 @@
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+
+import java.io.IOException;
 import java.sql.*;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
@@ -163,6 +166,29 @@ public class ProfilPatientController {
         // Logique pour afficher le profil du patient
         System.out.println("Affichage du profil");
     }
+
+    @FXML
+    private void handlePrescriptionButton() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/PrescriptionPatient.fxml"));
+            Parent root = loader.load();
+
+            // Obtenir le contrôleur de la page PrescriptionPatient
+            PrescriptionPatientController prescriptionPatientController = loader.getController();
+            prescriptionPatientController.setPatientId(userId);  // Passer l'ID du patient
+
+            // Créer et afficher la nouvelle scène
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) modifierButton.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
 
     @FXML
