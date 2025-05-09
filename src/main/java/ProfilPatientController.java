@@ -87,7 +87,7 @@ public class ProfilPatientController {
         }
 
         try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/hopital", "root", "Meryemechiguerr");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/hopital", "root", "a!y!a!boutahli12");
 
             String updateQuery = "UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, date_naissance = ?, telephone = ?, adresse = ?";
 

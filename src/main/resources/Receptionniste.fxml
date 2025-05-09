@@ -67,7 +67,7 @@
                     style="-fx-background-color: #17a2b8; -fx-text-fill: white; -fx-border-radius: 5px;" />
             <Button text="🗑️ Supprimer" onAction="#supprimerPatient"
                     style="-fx-background-color: #ffc107; -fx-text-fill: black; -fx-border-radius: 5px;" />
-            <Button text="⬅ Retour au menu" onAction="#retourMenu" prefWidth="150"
+            <Button text="⬅ Retour" onAction="#retourMenu" prefWidth="150"
                     style="-fx-background-color: #343a40; -fx-text-fill: white; -fx-border-radius: 5px;" />
         </HBox>
     </bottom>

@@ -47,19 +47,21 @@
     -fx-background-color: transparent;
 }
 
-.table-view .table-row-cell {
-    -fx-border-color: transparent;
-    -fx-background-color: white;
+/* ----- Ligne sélectionnée (couleur fond + texte noir) ----- */
+.table-view .table-row-cell:selected {
+    -fx-background-color: #d0e9ff; /* bleu très clair */
 }
 
-.table-view .table-row-cell:hover {
-    -fx-background-color: #e3f2fd;
+.table-view .table-cell:selected {
+    -fx-background-color: #d0e9ff !important;
+    -fx-text-fill: black !important;
 }
 
+/* Forcer le texte noir même dans les colonnes spécifiques */
 .table-view .table-cell {
-    -fx-font-size: 13px;
-    -fx-padding: 5 10;
+    -fx-text-fill: black;
 }
+
 
 /* ----- Boutons généraux ----- */
 .button {
@@ -108,4 +110,14 @@
 .button[text="⬅ Retour au menu"] {
     -fx-background-color: #34495e;
     -fx-text-fill: white;
+}
+/* ----- Ligne sélectionnée ----- */
+.table-row-cell:selected {
+    -fx-background-color: #d0e9ff; /* bleu très clair */
+    -fx-text-fill: black;          /* texte noir pour lisibilité */
+}
+
+.table-cell:selected {
+    -fx-background-color: #d0e9ff;
+    -fx-text-fill: black;
 }
