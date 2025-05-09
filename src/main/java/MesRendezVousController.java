@@ -11,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.sql.*;
 
 public class MesRendezVousController {
@@ -85,7 +86,7 @@ public class MesRendezVousController {
     public void initialize() {
         rendezVousTable.sceneProperty().addListener((obs, oldScene, newScene) -> {
             if (newScene != null) {
-                newScene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+                newScene.getStylesheets().add(getClass().getResource("/rend.css").toExternalForm());
             }
         });
     }
@@ -109,13 +110,53 @@ public class MesRendezVousController {
             showAlert("Erreur lors du chargement du profil.");
         }
     }
+
+    @FXML
+    private void handlePrescriptionButton() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/PrescriptionPatient.fxml"));
+            Parent root = loader.load();
+
+            // Passer l'ID du patient au contrôleur PrescriptionPatientController
+            PrescriptionPatientController controller = loader.getController();
+            controller.setUserId(userId);  // Assurez-vous que 'userId' est défini
+
+            // Changer la scène
+            Stage stage = (Stage) rendezVousTable.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void handleLogout() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Connexion.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Connexion");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            // Fermer la fenêtre actuelle
+            Stage currentStage = (Stage) rendezVousTable.getScene().getWindow();
+            currentStage.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
+    }
+
     @FXML
     private void handleDossierButton() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/dossier_medical.fxml"));
             Parent root = loader.load();
             DossierMedicalController controller = loader.getController();
-            controller.setUserId(userId);
+
+            controller.setUserId(userId); // Passe l'ID du patient au contrôleur
             Stage stage = (Stage) rendezVousTable.getScene().getWindow();
             stage.setScene(new Scene(root));
         } catch (Exception e) {
@@ -123,4 +164,5 @@ public class MesRendezVousController {
             showAlert("Erreur lors du chargement du dossier médical.");
         }
     }
+
 }

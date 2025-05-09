@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.*;
+
 public class PrescriptionPatientController {
 
     @FXML
@@ -24,24 +25,27 @@ public class PrescriptionPatientController {
     @FXML
     private TableColumn<Prescription, String> medecinCol;
 
-    private ObservableList<Prescription> prescriptions = FXCollections.observableArrayList();
-    private int patientId; // Déclaré sans valeur initiale
-
+    private ObservableList<Prescription> prescriptions;
+    private int userId;  // On garde uniquement userId ici
+    @FXML
+    private Label welcomeLabel;
     @FXML
     public void initialize() {
+        prescriptions = FXCollections.observableArrayList();  // Initialisation de la liste des prescriptions
+
         medicamentCol.setCellValueFactory(cellData -> cellData.getValue().medicamentProperty());
         posologieCol.setCellValueFactory(cellData -> cellData.getValue().posologieProperty());
         dureeCol.setCellValueFactory(cellData -> cellData.getValue().dureeProperty());
         dateCol.setCellValueFactory(cellData -> cellData.getValue().dateProperty());
         medecinCol.setCellValueFactory(cellData -> cellData.getValue().medecinProperty());
 
-        loadPrescriptions();
+        loadPrescriptions();  // Chargement des prescriptions à l'initialisation
     }
 
-    // Méthode pour définir l'ID du patient
-    public void setPatientId(int patientId) {
-        this.patientId = patientId;
-        loadPrescriptions();  // Charger les prescriptions avec l'ID du patient
+    // Méthode pour définir l'ID de l'utilisateur
+    public void setUserId(int userId) {
+        this.userId = userId;  // Initialise userId
+        loadPrescriptions();  // Recharger les prescriptions dès que l'ID utilisateur est défini
     }
 
     private void loadPrescriptions() {
@@ -49,6 +53,7 @@ public class PrescriptionPatientController {
         String user = "root";
         String password = "a!y!a!boutahli12";
 
+        // Requête modifiée pour utiliser uniquement userId
         String query = """
         SELECT p.medicament, p.posologie, p.duree,
                rv.date_heure AS date_consultation,
@@ -58,13 +63,15 @@ public class PrescriptionPatientController {
         JOIN utilisateurs u ON p.medecin_id = u.id
         WHERE rv.patient_id = ?
         ORDER BY rv.date_heure DESC
-    """;
+        """;
 
+        // Effacer les prescriptions précédentes avant de charger les nouvelles
+        prescriptions.clear();
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            stmt.setInt(1, patientId);  // Utiliser l'ID du patient dynamique
+            stmt.setInt(1, userId);  // Utilisation de userId
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -79,37 +86,85 @@ public class PrescriptionPatientController {
 
             prescriptionTable.setItems(prescriptions);
         } catch (SQLException e) {
+            showError("Erreur de base de données", "Impossible de charger les prescriptions.");
             e.printStackTrace();
         }
     }
 
-    @FXML
-    private void handleRetour() {
-        switchScene("ProfilPatient.fxml");
+    // Optionnel : méthode pour afficher une alerte d'erreur
+    private void showError(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     @FXML
-    private void handleRendezVous() {
-        switchScene("MesRendezVous.fxml");
-    }
-
-    @FXML
-    private void handleProfil() {
-        switchScene("profil_patient.fxml");
-    }
-
-    @FXML
-    private void handleDossier() {
-        switchScene("dossier_medical.fxml");
-    }
-
-    private void switchScene(String fxmlFile) {
+    private void handledossier() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/dossier_medical.fxml"));
             Parent root = loader.load();
+            DossierMedicalController controller = loader.getController();
+
+            controller.setUserId(userId); // Passe l'ID du patient au contrôleur
             Stage stage = (Stage) prescriptionTable.getScene().getWindow();
             stage.setScene(new Scene(root));
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+    }
+
+    @FXML
+    private void handleLogout() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Connexion.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Connexion");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            // Fermer la fenêtre actuelle
+            Stage currentStage = (Stage) prescriptionTable.getScene().getWindow();
+            currentStage.close();
+
         } catch (IOException e) {
+            e.printStackTrace();
+            showError("Erreur", "Impossible d’ouvrir l’écran de connexion.");
+        }
+    }
+
+    @FXML
+    private void handleProfilButton() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/profil_patient.fxml"));
+            Parent root = loader.load();
+            ProfilPatientController ctrl = loader.getController();
+            ctrl.setUserId(userId);  // Passage de userId
+            Stage stage = (Stage) prescriptionTable.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void handlepre() {
+        // Logique pour afficher le profil du patient
+        System.out.println("Affichage du profil");
+    }
+    @FXML
+    private void handleRendezVous() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MesRendezVous.fxml"));
+            Parent root = loader.load();
+            MesRendezVousController ctrl = loader.getController();
+            ctrl.setUserId(userId);  // Passage de userId
+            Stage stage = (Stage) prescriptionTable.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

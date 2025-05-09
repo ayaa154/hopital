@@ -133,12 +133,13 @@ public class ProfilPatientController {
         Alert alert = new Alert(Alert.AlertType.INFORMATION, message, ButtonType.OK);
         alert.showAndWait();
     }
+
     @FXML
     private void handleRendezVousButton() {
         try {
             // Charger le fichier FXML de la page MesRendezVous
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/MesRendezVous.fxml"));
-            VBox root = loader.load();
+            BorderPane root = loader.load();  // Charger un BorderPane ici
 
             // Obtenir le contrôleur de la page des rendez-vous
             MesRendezVousController rendezVousController = loader.getController();
@@ -161,10 +162,31 @@ public class ProfilPatientController {
 
 
 
+
     @FXML
     private void handleProfilButton() {
         // Logique pour afficher le profil du patient
         System.out.println("Affichage du profil");
+    }
+    @FXML
+    private void handleLogout() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Connexion.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Connexion");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            // Fermer la fenêtre actuelle
+            Stage currentStage = (Stage) modifierButton.getScene().getWindow();
+            currentStage.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
     }
 
     @FXML
@@ -175,7 +197,7 @@ public class ProfilPatientController {
 
             // Obtenir le contrôleur de la page PrescriptionPatient
             PrescriptionPatientController prescriptionPatientController = loader.getController();
-            prescriptionPatientController.setPatientId(userId);  // Passer l'ID du patient
+            prescriptionPatientController.setUserId(userId);  // Passer l'ID du patient
 
             // Créer et afficher la nouvelle scène
             Scene scene = new Scene(root);

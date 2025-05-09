@@ -3,34 +3,40 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="MesRendezVousController" spacing="20" alignment="CENTER">
-    <!-- Menu vertical à gauche -->
-    <HBox spacing="20" alignment="TOP_LEFT">
-        <VBox spacing="20" style="-fx-background-color: #3a6cc2; -fx-padding: 30; -fx-border-radius: 10;">
-            <!-- Boutons du menu -->
-            <Button text="Mes Rendez-vous" style="-fx-background-color: #4c8cff; -fx-text-fill: white; -fx-font-size: 18; -fx-background-radius: 10; -fx-padding: 10;" onAction="#handleRendezVousButton"/>
-            <Button text="Mon Profil" style="-fx-background-color: #4c8cff; -fx-text-fill: white; -fx-font-size: 18; -fx-background-radius: 10; -fx-padding: 10;" onAction="#handleProfilButton"/>
-            <Button text="Dossier Médical" style="-fx-background-color: #4c8cff; -fx-text-fill: white; -fx-font-size: 18; -fx-background-radius: 10; -fx-padding: 10;" onAction="#handleDossierButton"/>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="MesRendezVousController" fx:id="rootPane" stylesheets="@rend.css" prefWidth="800" prefHeight="600">
+
+    <!-- Menu vertical gauche avec la classe vbox-menu -->
+    <left>
+        <VBox spacing="20" alignment="TOP_CENTER" styleClass="vbox-menu" style="-fx-padding: 40 0 0 30;">
+
+        <Pane minHeight="80"/> <!-- Espace vide au-dessus du menu -->
+            <Button text="Mes Rendez-vous" maxWidth="200"
+                    styleClass="menu-button" onAction="#handleRendezVousButton"/>
+            <Button text="Mon Profil" maxWidth="200"
+                    styleClass="menu-button" onAction="#handleProfilButton"/>
+            <Button text="Dossier Médical" maxWidth="200"
+                    styleClass="menu-button" onAction="#handleDossierButton"/>
+            <Button text="Prescriptions" maxWidth="200"
+                    styleClass="menu-button" onAction="#handlePrescriptionButton"/>
+            <Button text="Déconnexion" maxWidth="200"
+                    onAction="#handleLogout"
+                    style="-fx-background-color: #d9534f; -fx-text-fill: white;" />
         </VBox>
+    </left>
 
-        <!-- Contenu principal avec les rendez-vous -->
-        <VBox spacing="30" alignment="CENTER" styleClass="main-content">
-            <Label text="Mes Rendez-vous" styleClass="title-label"/>
+    <!-- Contenu principal -->
+    <center>
+        <VBox spacing="20" alignment="CENTER" style="-fx-padding: 30;">
+            <Label text="Mes Rendez Vous" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #1976d2;"/>
 
-            <TableView fx:id="rendezVousTable" styleClass="table-view" prefWidth="900" prefHeight="500">
+            <TableView fx:id="rendezVousTable" prefWidth="900" prefHeight="500" styleClass="table-view">
                 <columns>
                     <TableColumn fx:id="dateColumn" text="Date et Heure" styleClass="table-column"/>
                     <TableColumn fx:id="motifColumn" text="Motif" styleClass="table-column"/>
                     <TableColumn fx:id="statutColumn" text="Statut" styleClass="table-column"/>
                 </columns>
             </TableView>
-
-            <HBox spacing="15" alignment="CENTER">
-                <padding>
-                    <Insets top="30" right="30" bottom="30" left="30"/>
-                </padding>
-                <Button text="Retour" fx:id="backButton" styleClass="button"/>
-            </HBox>
         </VBox>
-    </HBox>
-</VBox>
+    </center>
+
+</BorderPane>

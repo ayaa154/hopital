@@ -1,0 +1,141 @@
+.root {
+    -fx-background-image: url("/1.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+    -fx-opacity: 0.95;
+}
+
+.menu-button {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-background-radius: 10px;
+    -fx-padding: 10px 20px;
+    -fx-font-weight: bold;
+
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-background-radius: 10px;
+    -fx-padding: 10px 20px;
+    -fx-font-weight: bold;
+}
+
+
+/* Boutons du menu */
+
+.menu-button:hover {
+    -fx-background-color: #3a7cc3;
+}
+
+.menu-button, .menu-button-selected {
+    -fx-font-size: 16px;
+    -fx-background-radius: 8;
+    -fx-text-fill: white;
+    -fx-pref-width: 180;
+    -fx-padding: 10;
+}
+
+.menu-button {
+    -fx-background-color: #4c8cff;
+}
+
+.menu-button-selected {
+    -fx-background-color: #2a6eff;
+    -fx-font-weight: bold;
+    -fx-border-color: white;
+    -fx-border-width: 2;
+}
+
+.back-button {
+    -fx-background-color: #4c8cff;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-background-radius: 8;
+}
+
+
+.logout-button {
+    -fx-background-color: #d9534f;
+    -fx-text-fill: white;
+}
+
+/* Contenu principal : titre centré */
+.main-content {
+    -fx-spacing: 30px;
+    -fx-alignment: CENTER;
+    -fx-padding: 30px;
+}
+
+/* Centrage du titre */
+.title-label {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1976d2; /* Couleur bleue */
+    -fx-alignment: CENTER;
+}
+
+/* TableView */
+.table-view {
+    -fx-background-color: white;
+    -fx-padding: 10px;
+    -fx-max-width: 1000px;
+    -fx-max-height: 500px;
+}
+
+/* Style des cellules du tableau */
+.table-cell {
+    -fx-alignment: CENTER;
+    -fx-padding: 10px;
+    -fx-font-size: 14px;
+    -fx-text-fill: black;
+    -fx-background-color: white;
+}
+
+.table-column-header {
+    -fx-background-color: #2196F3; /* Couleur bleue */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 5px;
+}
+
+/* Sélection de la cellule */
+.table-view .table-cell:selected {
+    -fx-background-color: #4c8cff;
+    -fx-text-fill: white;
+}
+
+.table-view {
+    -fx-background-color: white;
+    -fx-padding: 5px;
+    -fx-border-width: 1px; /* Optionnel pour ajouter une bordure autour de la table */
+    -fx-border-color: #1976d2; /* Ajouter une couleur de bordure pour délimiter */
+}
+
+/* Style des cellules individuelles (carrées sans bordure) */
+.table-cell {
+    -fx-padding: 5px;
+    -fx-alignment: CENTER; /* Centrer le texte dans les cellules */
+    -fx-background-color: white;
+    -fx-min-width: 100; /* Largeur minimale pour les cellules */
+    -fx-min-height: 100; /* Hauteur minimale pour que la cellule soit carrée */
+    -fx-max-width: 100; /* Largeur maximale pour maintenir la forme carrée */
+    -fx-max-height: 100; /* Hauteur maximale pour maintenir la forme carrée */
+    -fx-font-size: 12px; /* Taille de police pour améliorer la lisibilité */
+    -fx-border-color: transparent; /* Suppression de la bordure par défaut des cellules */
+}
+
+/* Style des entêtes de colonnes */
+.table-column-header {
+    -fx-background-color: #1976d2;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 5px;
+}
+
+/* Style lorsque la cellule est sélectionnée */
+.table-view .table-cell:selected {
+    -fx-background-color: #4c8cff;
+    -fx-text-fill: white;
+}

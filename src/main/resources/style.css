@@ -1,37 +1,65 @@
-/* Fichier style.css */
-
-/* Style général du conteneur VBox */
 .root {
-    -fx-font-family: "Arial", sans-serif;
-    -fx-background-color: #f4f7f9;
-    -fx-alignment: center;
-}
+     -fx-background-image: url("/1.jpg");
+     -fx-background-size: cover;
+     -fx-background-position: center center;
+     -fx-background-repeat: no-repeat;
+     -fx-opacity: 0.95;
+ }
 
-/* Menu vertical (zone à gauche) */
-.side-menu {
-    -fx-background-color: #3a6cc2;
-    -fx-padding: 30px;
-    -fx-spacing: 20px;
-    -fx-pref-width: 200px;
-    -fx-alignment: top_center;
-    -fx-border-radius: 10px;
-}
+ .menu-button {
+     -fx-background-color: #2196F3;
+     -fx-text-fill: white;
+     -fx-font-size: 16px;
+     -fx-background-radius: 10px;
+     -fx-padding: 10px 20px;
+     -fx-font-weight: bold;
+ }
+ /* Menu vertical */
+ .vbox-menu {
+     -fx-background-color: rgba(255, 255, 255, 0.85); /* blanc semi-transparent */
+     -fx-background-radius: 15;
+     -fx-padding: 20;
+     -fx-spacing: 15;
+ }
 
-/* Style des boutons du menu */
-.menu-button {
-    -fx-background-color: #4c8cff;
+ /* Boutons du menu */
+ .vbox-menu .button {
+     -fx-background-color: #3498db;
+     -fx-text-fill: white;
+     -fx-font-size: 16px;
+     -fx-background-radius: 8;
+     -fx-padding: 10 15;
+     -fx-cursor: hand;
+     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0.0, 2, 2);
+     -fx-transition: all 0.3s ease;
+ }
+
+ .menu-button:hover {
+     -fx-background-color: #3a7cc3;
+ }
+
+ .menu-button, .menu-button-selected {
+     -fx-font-size: 16px;
+     -fx-background-radius: 8;
+     -fx-text-fill: white;
+     -fx-pref-width: 180;
+     -fx-padding: 10;
+ }
+.logout-button {
+    -fx-background-color: #d9534f;
     -fx-text-fill: white;
-    -fx-font-size: 18px;
-    -fx-padding: 10px;
-    -fx-border-radius: 10px;
-    -fx-alignment: center-left;
 }
 
-/* Effet de survol pour les boutons */
-.menu-button:hover {
-    -fx-background-color: #3a6cc2;
-    -fx-effect: dropshadow(gaussian, #2a4e9a, 5, 0.3, 0, 3);
-}
+ .menu-button {
+     -fx-background-color: #4c8cff;
+ }
+
+ .menu-button-selected {
+     -fx-background-color: #2a6eff;
+     -fx-font-weight: bold;
+     -fx-border-color: white;
+     -fx-border-width: 2;
+ }
 
 /* Contenu principal à droite (rendez-vous et autres éléments) */
 .main-content {

@@ -4,32 +4,37 @@
 
 <StackPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="PrescriptionPatientController"
-           stylesheets="@stylepr.css"
-           fx:id="root">
+           stylesheets="@pres.css"
+           fx:id="root" prefWidth="800" prefHeight="600">
 
     <BorderPane>
-
-        <!-- Menu vertical -->
         <left>
-            <VBox spacing="15" style="-fx-background-color: rgba(58, 108, 194, 0.7); -fx-padding: 30;">
-                <Button text="Mes Rendez-vous" onAction="#handleRendezVous" styleClass="menu-button"/>
-                <Button text="Mon Profil" onAction="#handleProfil" styleClass="menu-button"/>
-                <Button text="Dossier Médical" onAction="#handleDossier" styleClass="menu-button"/>
-                <Button text="Prescriptions" styleClass="menu-button-selected"/>
+            <VBox spacing="20" alignment="TOP_CENTER" style="-fx-padding: 30 0 0 30;">
+                <Button text="Mes Rendez-vous" maxWidth="200"
+                        styleClass="menu-button" onAction="#handleRendezVous"/>
+                <Button text="Mon Profil" maxWidth="200"
+                        styleClass="menu-button" onAction="#handleProfilButton"/>
+                <Button text="Dossier Médical" maxWidth="200"
+                        styleClass="menu-button" onAction="#handledossier"/>
+                <Button text="Prescriptions" maxWidth="200"
+                        styleClass="menu-button" onAction="#handlepre"/>
+                <Button text="Déconnexion" maxWidth="200"
+                        onAction="#handleLogout"
+                        style="-fx-background-color: #d9534f; -fx-text-fill: white;" />
+
+
             </VBox>
         </left>
 
-        <!-- Haut avec bouton retour + titre -->
-        <top>
-            <HBox spacing="20" alignment="CENTER_LEFT" style="-fx-padding: 20;">
-                <Button text="⟵ Retour" onAction="#handleRetour" styleClass="back-button"/>
-                <Label text="Mes Prescriptions" style="-fx-font-size: 24px; -fx-text-fill: white; -fx-font-weight: bold;"/>
-            </HBox>
-        </top>
 
-        <!-- Centre avec la table des prescriptions -->
+
+        <top>
+            <VBox alignment="TOP_CENTER" style="-fx-padding: 50 20 20 20;"> <!-- Modifié padding -->
+                <Label text="   Prescription " style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #1976d2;"/>
+            </VBox>
+        </top>
         <center>
-            <VBox alignment="CENTER" spacing="20" style="-fx-padding: 30;">
+            <VBox alignment="TOP_CENTER" spacing="20" style="-fx-padding: 10 30 10 30;">
                 <TableView fx:id="prescriptionTable" prefWidth="750" styleClass="prescription-table">
                     <columns>
                         <TableColumn fx:id="medicamentCol" text="Médicament" prefWidth="150"/>
@@ -41,6 +46,8 @@
                 </TableView>
             </VBox>
         </center>
+
+
 
     </BorderPane>
 </StackPane>

@@ -3,21 +3,33 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="DossierMedicalController">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="DossierMedicalController" fx:id="rootPane" stylesheets="@dosier.css" prefWidth="900" prefHeight="600">
 
     <!-- Menu vertical gauche -->
-    <left>
-        <VBox spacing="20" style="-fx-background-color: #3a6cc2; -fx-padding: 30;">
-            <Button text="Mes Rendez-vous" style="-fx-background-color: #4c8cff; -fx-text-fill: white; -fx-font-size: 16; -fx-background-radius: 10;" onAction="#handleRendezVousButton"/>
-            <Button text="Mon Profil" style="-fx-background-color: #4c8cff; -fx-text-fill: white; -fx-font-size: 16; -fx-background-radius: 10;" onAction="#handleProfilButton"/>
-            <Button text="Dossier Médical" style="-fx-background-color: #1e50a2; -fx-text-fill: white; -fx-font-size: 16; -fx-background-radius: 10;" onAction="#handleDossierButton"/>
-        </VBox>
-    </left>
+
+        <left>
+            <VBox spacing="20" alignment="TOP_CENTER" style="-fx-padding: 30;">
+                <Pane minHeight="80"/> <!-- Espace vide au-dessus du menu -->
+                <Button text="Mes Rendez-vous" maxWidth="200"
+                        styleClass="menu-button" onAction="#handleRendezVousButton"/>
+                <Button text="Mon Profil" maxWidth="200"
+                        styleClass="menu-button" onAction="#handleProfilButton"/>
+                <Button text="Dossier Médical" maxWidth="200"
+                        styleClass="menu-button" onAction="#handleDossierButton"/>
+                <Button text="Prescriptions" maxWidth="200"
+                        styleClass="menu-button" onAction="#handlePrescription"/>
+                <Button text="Déconnexion" maxWidth="200"
+                        onAction="#handleLogout"
+                        style="-fx-background-color: #d9534f; -fx-text-fill: white;" />
+            </VBox>
+        </left>
+
+
 
     <!-- Contenu principal -->
     <center>
         <VBox spacing="20" alignment="CENTER" style="-fx-padding: 30;">
-            <Label text="Dossier Médical du Patient" style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
+            <Label text="Dossier Médical du Patient" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #1976d2;"/>
 
             <TableView fx:id="dossierTable" prefWidth="800" prefHeight="400">
                 <columns>

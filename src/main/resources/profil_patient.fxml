@@ -15,60 +15,71 @@
 
         <!-- Menu vertical à gauche -->
         <left>
-            <VBox spacing="20" style="-fx-padding: 30;">
-                <Button text="Mes Rendez-vous" style="-fx-background-color: #4c8cff; -fx-text-fill: white; -fx-font-size: 18; -fx-background-radius: 10; -fx-padding: 10;" onAction="#handleRendezVousButton"/>
-                <Button text="Mon Profil" style="-fx-background-color: #4c8cff; -fx-text-fill: white; -fx-font-size: 18; -fx-background-radius: 10; -fx-padding: 10;" onAction="#handleProfilButton"/>
-                <Button text="Dossier Médical" style="-fx-background-color: #4c8cff; -fx-text-fill: white; -fx-font-size: 18; -fx-background-radius: 10; -fx-padding: 10;" onAction="#handleDossierButton"/>
-                <Button text="Prescriptions" style="-fx-background-color: #4c8cff; -fx-text-fill: white; -fx-font-size: 18; -fx-background-radius: 10; -fx-padding: 10;" onAction="#handlePrescriptionButton"/>
-
+            <VBox spacing="20" alignment="TOP_CENTER" style="-fx-padding: 30;">
+                <Button text="Mes Rendez-vous" maxWidth="200"
+                        styleClass="menu-button" onAction="#handleRendezVousButton"/>
+                <Button text="Mon Profil" maxWidth="200"
+                        styleClass="menu-button" onAction="#handleProfilButton"/>
+                <Button text="Dossier Médical" maxWidth="200"
+                        styleClass="menu-button" onAction="#handleDossierButton"/>
+                <Button text="Prescriptions" maxWidth="200"
+                        styleClass="menu-button" onAction="#handlePrescriptionButton"/>
+                <Button text="Déconnexion" maxWidth="200"
+                        onAction="#handleLogout"
+                        style="-fx-background-color: #d9534f; -fx-text-fill: white;" />
             </VBox>
         </left>
 
-        <!-- Section supérieure avec le titre -->
+        <!-- Titre centré -->
         <top>
-            <HBox style="-fx-padding: 20;">
-                <Label text="Profil Patient" style="-fx-text-fill: white; -fx-font-size: 22; -fx-font-weight: bold;"/>
+            <HBox alignment="CENTER" style="-fx-padding: 30;">
+                <Label text="Profil Patient"
+                       style="-fx-text-fill: #2196F3; -fx-font-size: 28; -fx-font-weight: bold;"/>
             </HBox>
         </top>
 
-        <!-- Section centrale avec le contenu du profil -->
+        <!-- Contenu principal -->
         <center>
-            <VBox fx:id="contenuProfil" spacing="20" alignment="CENTER" style="-fx-padding: 30;">
-                <GridPane hgap="10" vgap="15">
+            <VBox fx:id="contenuProfil" spacing="25" alignment="CENTER" style="-fx-padding: 30;">
+                <GridPane hgap="15" vgap="20">
                     <columnConstraints>
-                        <ColumnConstraints halignment="RIGHT" minWidth="100"/>
-                        <ColumnConstraints halignment="LEFT" minWidth="200"/>
+                        <ColumnConstraints halignment="RIGHT" minWidth="150"/>
+                        <ColumnConstraints halignment="LEFT" minWidth="250"/>
                     </columnConstraints>
 
-                    <!-- Informations personnelles -->
+                    <!-- Titre section infos -->
                     <Label text="Informations Personnelles:" GridPane.columnIndex="0" GridPane.rowIndex="0"
-                           style="-fx-font-weight: bold; -fx-font-size: 14;"/>
+                           style="-fx-font-weight: bold; -fx-font-size: 18;-fx-padding: 30 30 0 30;" GridPane.columnSpan="2" />
 
                     <Label text="Nom:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                    <TextField fx:id="nomField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                    <TextField fx:id="nomField" prefWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
                     <Label text="Prénom:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-                    <TextField fx:id="prenomField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                    <TextField fx:id="prenomField" prefWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
                     <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-                    <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                    <TextField fx:id="emailField" prefWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 
                     <Label text="Date de naissance:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-                    <DatePicker fx:id="dateNaissanceField" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                    <DatePicker fx:id="dateNaissanceField" prefWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
 
                     <Label text="Téléphone:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-                    <TextField fx:id="telephoneField" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                    <TextField fx:id="telephoneField" prefWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
 
                     <Label text="Adresse:" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
-                    <TextArea fx:id="adresseField" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+                    <TextArea fx:id="adresseField" wrapText="true" prefWidth="300" prefHeight="80"
+                              GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+
+                    <!-- Nouveau mot de passe -->
+                    <Label text="Nouveau mot de passe:" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+                    <PasswordField fx:id="motDePasseField" prefWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
                 </GridPane>
 
-                <Label text="Nouveau Mot de Passe:"/>
-                <PasswordField fx:id="motDePasseField"/>
-
                 <Button text="Sauvegarder les modifications" fx:id="modifierButton"
-                        style="-fx-background-color: #2a9df4; -fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10; -fx-border-radius: 10;"
-                        onAction="#handleModifierButton"/>
+                        maxWidth="250" styleClass="menu-button"
+                        onAction="#handleModifierButton"
+                        style="-fx-margin-right: 60px;"/>
+
             </VBox>
         </center>
 

@@ -67,8 +67,46 @@
     -fx-background-radius: 8;
 }
 
-.prescription-table {
-    -fx-background-color: rgba(255, 255, 255, 0.9);
-    -fx-border-radius: 10;
-    -fx-padding: 10;
+
+/* Applique une couleur d'arrière-plan pour la zone centrale */
+.center {
+    -fx-background-color: rgba(255, 255, 255, 0.8); /* Fond légèrement transparent */
+}
+
+/* Personnalisation du titre principal */
+.center > Label {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1976d2;
+}
+/* Style pour la TableView (fond blanc) */
+.table-view {
+    -fx-background-color: white;
+    -fx-padding: 5px;
+}
+
+/* Style des cellules individuelles (carrées sans bordure) */
+.table-cell {
+    -fx-padding: 5px;
+    -fx-alignment: CENTER; /* Centrer le texte dans les cellules */
+    -fx-background-color: white;
+    -fx-min-width: 100; /* Largeur minimale pour les cellules */
+    -fx-min-height: 100; /* Hauteur minimale pour que la cellule soit carrée */
+    -fx-max-width: 100; /* Largeur maximale pour maintenir la forme carrée */
+    -fx-max-height: 100; /* Hauteur maximale pour maintenir la forme carrée */
+    -fx-font-size: 12px; /* Taille de police pour améliorer la lisibilité */
+}
+
+/* Style des entêtes de colonnes */
+.table-column-header {
+    -fx-background-color: #1976d2;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 5px;
+}
+
+/* Style lorsque la cellule est sélectionnée */
+.table-view .table-cell:selected {
+    -fx-background-color: #4c8cff;
+    -fx-text-fill: white;
 }
