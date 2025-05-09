@@ -125,7 +125,7 @@ public class ConsultationFormController {
 
             showAlert("Succès", "Consultation enregistrée avec succès.");
             Stage stage = (Stage) btnAjouterConsultation.getScene().getWindow();
-            stage.close();
+
 
         } catch (SQLException e) {
             e.printStackTrace();

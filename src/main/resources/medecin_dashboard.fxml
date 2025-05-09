@@ -5,40 +5,34 @@
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="MedecinDashboardController"
-            style="-fx-background-color: #2196F3;">
+            style="-fx-background-color: #ADD8E6;">
 
+    <!-- Haut : Titre et bienvenue -->
     <top>
         <VBox spacing="10" alignment="CENTER"
-              style="-fx-padding: 20; -fx-background-color: #2196F3;">
+              style="-fx-padding: 20; -fx-background-color: #ADD8E6;">
 
-            <!-- Ligne avec bouton de déconnexion à droite -->
-            <HBox alignment="TOP_RIGHT" spacing="10">
-                <Region fx:id="spacer" HBox.hgrow="ALWAYS" />
-                <Button text="Se déconnecter" onAction="#seDeconnecter"
-                        style="-fx-background-color: #ff4d4d; -fx-text-fill: white;" />
-            </HBox>
-
-            <!-- Message de bienvenue -->
             <Label fx:id="welcomeLabel"
                    textFill="white"
-                   style="-fx-font-size: 16px;" />
+                   style="-fx-font-size: 24px; -fx-font-weight: bold;" />
 
-            <!-- Titre principal avec emoji, placé après le message de bienvenue -->
-            <Label text="🗓️ Voici les rendez-vous de cette semaine :"
-                   textFill="white"
-                   style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+            <HBox alignment="CENTER" spacing="5">
+                <Label text="🗓️" style="-fx-font-size: 18px;" />
+                <Label text="Voici les rendez-vous de cette semaine :"
+                       textFill="white"
+                       style="-fx-font-size: 16px;" />
+            </HBox>
 
-            <!-- Bouton pour rafraîchir -->
             <Button text="Rafraîchir" onAction="#rafraichirRendezvous"
-                    style="-fx-background-color: #FF9800; -fx-text-fill: white;"/>
+                    style="-fx-background-color: #64b5f6; -fx-text-fill: white;"/>
         </VBox>
     </top>
 
+    <!-- Centre : Table + boutons -->
     <center>
         <VBox spacing="10" alignment="CENTER"
-              style="-fx-padding: 20; -fx-background-color: #2196F3;">
+              style="-fx-padding: 20; -fx-background-color: #ADD8E6;">
 
-            <!-- Table des rendez-vous -->
             <TableView fx:id="rendezvousTable" style="-fx-font-size: 14px;">
                 <columns>
                     <TableColumn fx:id="colPrenom" text="Prénom du patient" prefWidth="150"/>
@@ -48,16 +42,24 @@
                 </columns>
             </TableView>
 
-            <!-- Ligne avec trois boutons -->
             <HBox spacing="10">
                 <Button text="Ajouter Consultation" onAction="#ouvrirFenetreConsultation"
-                        style="-fx-background-color: #4CAF50; -fx-text-fill: white;" />
+                        style="-fx-background-color: #81c784; -fx-text-fill: white;" />
                 <Button text="Ajouter Prescription" onAction="#ouvrirFenetrePrescription"
-                        style="-fx-background-color: #87CEEB; -fx-text-fill: white;" />
+                        style="-fx-background-color: #4dd0e1; -fx-text-fill: white;" />
                 <Button text="Voir Dossier Médical" onAction="#voirDossierMedical"
-                        style="-fx-background-color: #FF9800; -fx-text-fill: white;" />
+                        style="-fx-background-color: #ffd54f; -fx-text-fill: black;" />
             </HBox>
         </VBox>
     </center>
+
+    <!-- Bas : bouton de déconnexion à droite -->
+    <bottom>
+        <HBox alignment="BOTTOM_RIGHT" style="-fx-padding: 10;">
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="Se déconnecter" onAction="#seDeconnecter"
+                    style="-fx-background-color: #e57373; -fx-text-fill: white;" />
+        </HBox>
+    </bottom>
 
 </BorderPane>

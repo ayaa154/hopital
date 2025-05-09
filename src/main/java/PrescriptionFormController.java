@@ -69,8 +69,7 @@ public class PrescriptionFormController {
             // Afficher une alerte de succès
             showAlert("Succès", "Prescription enregistrée avec succès.");
 
-            // Facultatif : fermer la fenêtre après l'enregistrement
-            medicamentField.getScene().getWindow().hide();
+
 
         } catch (SQLException e) {
             e.printStackTrace();
