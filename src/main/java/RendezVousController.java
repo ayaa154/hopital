@@ -133,20 +133,42 @@ public class RendezVousController {
         RendezVous selection = tableRdv.getSelectionModel().getSelectedItem();
 
         if (selection == null) {
-            afficherMessage("⚠️ Sélectionnez un rendez-vous à annuler.", true);
+            afficherMessage("⚠️ Please select an appointment to cancel.", true);
             return;
         }
 
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/hopital", "root", "a!y!a!boutahli12")) {
+
+            // Récupérer la date/heure du RDV sélectionné
+            String sqlCheck = "SELECT date_heure FROM rendez_vous WHERE id = ?";
+            PreparedStatement stmtCheck = conn.prepareStatement(sqlCheck);
+            stmtCheck.setInt(1, selection.getId());
+            ResultSet rs = stmtCheck.executeQuery();
+
+            if (rs.next()) {
+                String dateHeureStr = rs.getString("date_heure");
+                java.time.LocalDateTime rdvDateTime = java.time.LocalDateTime.parse(dateHeureStr.replace(" ", "T"));
+
+                if (rdvDateTime.isBefore(java.time.LocalDateTime.now().plusHours(2))) {
+                    afficherMessage("❌ This appointment can no longer be cancelled (less than 2 hours remaining).", true);
+                    return;
+                }
+            }
+
+            rs.close();
+            stmtCheck.close();
+
+            // Supprimer si valide
             String sql = "DELETE FROM rendez_vous WHERE id = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, selection.getId());
             stmt.executeUpdate();
             stmt.close();
             chargerDonneesRdv();
-            afficherMessage("✅ Rendez-vous annulé avec succès.", false);
+            afficherMessage("✅ Appointment successfully cancelled.", false);
+
         } catch (Exception e) {
-            afficherMessage("❌ Erreur lors de l'annulation.", true);
+            afficherMessage("❌ Error while cancelling the appointment.", true);
         }
     }
 

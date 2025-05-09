@@ -1,9 +1,14 @@
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,6 +18,7 @@ import java.sql.SQLException;
 public class ConsultationDossierController {
 
     private int patientId;
+    private int medecinId;
 
     @FXML
     private TableView<DossierEntry> tableDossierMedical;
@@ -30,11 +36,11 @@ public class ConsultationDossierController {
     private TableColumn<DossierEntry, String> colMedecin;
 
     @FXML
-    private Label noRecordsLabel;  // Label pour afficher un message lorsqu'il n'y a pas de dossiers
+    private Label noRecordsLabel;
 
     @FXML
     public void initialize() {
-        // Initialisation des colonnes de la TableView avec les propriétés liées de DossierEntry
+        // Initialisation des colonnes de la TableView
         colDateConsultation.setCellValueFactory(cellData -> cellData.getValue().dateProperty());
         colDiagnostic.setCellValueFactory(cellData -> cellData.getValue().diagnosticProperty());
         colTraitement.setCellValueFactory(cellData -> cellData.getValue().traitementProperty());
@@ -46,62 +52,95 @@ public class ConsultationDossierController {
         chargerDossierMedical();
     }
 
+    public void setMedecinId(int id) {
+        this.medecinId = id;
+        System.out.println("Médecin ID défini: " + this.medecinId); // Debug
+    }
+
+    @FXML
+    private void returnToDashboard() {
+        try {
+            if (this.medecinId <= 0) {
+                showAlert("Erreur", "Aucun ID médecin défini.");
+                return;
+            }
+
+            // Chargement du fichier FXML du dashboard
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("medecin_dashboard.fxml")); // ← remplace le chemin
+            Parent root = loader.load();
+
+            // Récupérer le contrôleur et transmettre l’ID médecin
+            MedecinDashboardController controller = loader.getController();
+            controller.setMedecinId(this.medecinId);
+
+            // Changer la scène
+            Stage currentStage = (Stage) tableDossierMedical.getScene().getWindow();
+            Scene scene = new Scene(root);
+            currentStage.setScene(scene);
+            currentStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Impossible de charger le dashboard du médecin.\n" + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Erreur inattendue", e.getMessage());
+        }
+    }
+
+
     private void chargerDossierMedical() {
-        // Vider la table avant de recharger
         tableDossierMedical.getItems().clear();
 
         if (patientId <= 0) {
-            // Si patientId n'est pas valide, afficher un message
-            System.out.println("ID patient non valide : " + patientId);
+            noRecordsLabel.setText("ID patient non valide");
+            noRecordsLabel.setVisible(true);
             return;
         }
 
-        System.out.println("Connexion à la base de données...");
-        String url = "jdbc:mysql://localhost:3306/hopital"; // Changez selon votre config
-        String user = "root";
-        String password = "a!y!a!boutahli12";
+        final String DB_URL = "jdbc:mysql://localhost:3306/hopital";
+        final String DB_USER = "root";
+        final String DB_PASSWORD = "a!y!a!boutahli12";
 
-        String sql = "SELECT c.date_consultation, c.diagnostic, c.traitement, u.nom AS medecin_nom, u.prenom AS medecin_prenom " +
+        String sql = "SELECT c.date_consultation, c.diagnostic, c.traitement, u.nom, u.prenom " +
                 "FROM consultations c " +
                 "JOIN dossiers_medicaux d ON c.dossier_id = d.id " +
                 "JOIN utilisateurs u ON c.medecin_id = u.id " +
                 "WHERE d.patient_id = ?";
 
-        try (Connection conn = DriverManager.getConnection(url, user, password);
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, patientId);
-            System.out.println("Exécution de la requête SQL...");
             ResultSet rs = stmt.executeQuery();
 
-            boolean found = false;
+            boolean hasRecords = false;
 
             while (rs.next()) {
-                found = true;
+                hasRecords = true;
                 String date = rs.getString("date_consultation");
                 String diagnostic = rs.getString("diagnostic");
                 String traitement = rs.getString("traitement");
-                String medecinNom = rs.getString("medecin_nom");
-                String medecinPrenom = rs.getString("medecin_prenom");
+                String medecin = rs.getString("nom") + " " + rs.getString("prenom");
 
-                // Ajout d'une nouvelle entrée avec le nom complet du médecin
-                tableDossierMedical.getItems().add(new DossierEntry(date, diagnostic, traitement, medecinNom + " " + medecinPrenom));
+                tableDossierMedical.getItems().add(new DossierEntry(date, diagnostic, traitement, medecin));
             }
 
-            // Affichage d'un message s'il n'y a pas de dossiers
-            if (!found) {
-                noRecordsLabel.setText("Aucun dossier médical trouvé pour ce patient.");
-                noRecordsLabel.setVisible(true);  // Afficher le label si aucun dossier trouvé
-            } else {
-                noRecordsLabel.setText("");  // Masquer le label si des résultats sont trouvés
-                noRecordsLabel.setVisible(false);
-            }
+            noRecordsLabel.setText(hasRecords ? "" : "Aucun dossier médical trouvé");
+            noRecordsLabel.setVisible(!hasRecords);
 
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Erreur SQL : " + e.getMessage());
-            noRecordsLabel.setText("Erreur lors de la récupération des dossiers.");
-            noRecordsLabel.setVisible(true);  // Afficher un message d'erreur
+            noRecordsLabel.setText("Erreur de base de données");
+            noRecordsLabel.setVisible(true);
         }
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

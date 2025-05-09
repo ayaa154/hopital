@@ -49,7 +49,7 @@
             <HBox spacing="10" alignment="CENTER">
                 <Button text="➕ Créer RDV" onAction="#ouvrirFormulaireAjout"
                         style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-border-radius: 5px;" />
-                <Button text="✏️ Modifier RDV" onAction="#ouvrirFormulaireModification"
+                <Button text="Modifier RDV" onAction="#ouvrirFormulaireModification"
                         style="-fx-background-color: #ffc107; -fx-text-fill: black; -fx-border-radius: 5px;" />
                 <Button text="❌ Annuler RDV" onAction="#annulerRdv"
                         style="-fx-background-color: #dc3545; -fx-text-fill: white; -fx-border-radius: 5px;" />

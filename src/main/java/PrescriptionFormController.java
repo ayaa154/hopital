@@ -1,8 +1,14 @@
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -71,6 +77,30 @@ public class PrescriptionFormController {
             showAlert("Erreur", "Impossible d'enregistrer la prescription : " + e.getMessage());
         }
     }
+
+
+    @FXML
+    private void returnToDashboard() {
+        try {
+            // Charger la page medecin_dashboard.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("medecin_dashboard.fxml"));
+            Parent dashboardPage = loader.load();
+
+            // Récupérer le contrôleur du tableau de bord et passer l'ID du médecin
+            MedecinDashboardController dashboardController = loader.getController();
+            dashboardController.setMedecinId(medecinId);  // Passer l'ID du médecin connecté
+
+            // Obtenez l'actuelle scène et remplacez le contenu par le tableau de bord
+            Scene currentScene = medicamentField.getScene();
+            currentScene.setRoot(dashboardPage);
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Impossible de charger le tableau de bord.");
+        }
+    }
+
+
+
 
     // Méthode pour afficher une alerte
     private void showAlert(String titre, String message) {

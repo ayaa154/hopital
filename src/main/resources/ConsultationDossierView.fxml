@@ -25,4 +25,8 @@
         </columns>
     </TableView>
 
+    <!-- Bouton Retour ajouté -->
+    <Button text="⬅ Retour"
+            onAction="#returnToDashboard"
+            style="-fx-background-color: #90CAF9; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 20; -fx-border-radius: 5; -fx-background-radius: 5;" />
 </VBox>

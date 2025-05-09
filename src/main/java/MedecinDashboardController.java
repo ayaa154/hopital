@@ -159,10 +159,9 @@ public class MedecinDashboardController {
             controller.setMedecinId(medecinId);
             controller.setRendezVousId(selection.getId());
 
-            Stage stage = new Stage();
-            stage.setTitle("Nouvelle Prescription");
-            stage.setScene(new Scene(root));
-            stage.show();
+            // Remplacer le contenu de la scène actuelle avec la nouvelle vue
+            Stage stage = (Stage) welcomeLabel.getScene().getWindow(); // Récupérer la fenêtre actuelle
+            stage.getScene().setRoot(root); // Remplacer le root de la scène par la nouvelle vue
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -185,10 +184,9 @@ public class MedecinDashboardController {
             controller.setMedecinId(medecinId);
             controller.setRendezVousId(selection.getId());
 
-            Stage stage = new Stage();
-            stage.setTitle("Nouvelle Consultation");
-            stage.setScene(new Scene(root));
-            stage.show();
+            // Remplacer le contenu de la scène actuelle avec la nouvelle vue
+            Stage stage = (Stage) welcomeLabel.getScene().getWindow(); // Récupérer la fenêtre actuelle
+            stage.getScene().setRoot(root); // Remplacer le root de la scène par la nouvelle vue
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -196,36 +194,32 @@ public class MedecinDashboardController {
     }
 
     // Nouvelle méthode pour voir le dossier médical du patient
+
     @FXML
     private void voirDossierMedical() {
-        // Récupérer la ligne sélectionnée dans le tableau des rendez-vous
         RendezVousMedecin selection = rendezvousTable.getSelectionModel().getSelectedItem();
 
-        // Vérifier qu'un rendez-vous a bien été sélectionné
         if (selection == null || selection.getId() == -1) {
             showAlert("Aucun rendez-vous sélectionné", "Veuillez sélectionner un rendez-vous pour voir le dossier médical.");
             return;
         }
 
         try {
-            // Charger le fichier FXML pour afficher le dossier médical
             FXMLLoader loader = new FXMLLoader(getClass().getResource("ConsultationDossierView.fxml"));
             Parent root = loader.load();
 
-            // Récupérer le contrôleur et passer le patientId
             ConsultationDossierController controller = loader.getController();
-            controller.setPatientId(selection.getPatientId());  // Passer le patientId ici
+            controller.setPatientId(selection.getPatientId());
+            controller.setMedecinId(medecinId); // ✅ AJOUT ICI
 
-            // Créer une nouvelle scène pour le dossier médical
-            Stage stage = new Stage();
-            stage.setTitle("Dossier Médical du Patient");
-            stage.setScene(new Scene(root));
-            stage.show();
+            Stage stage = (Stage) welcomeLabel.getScene().getWindow();
+            stage.getScene().setRoot(root);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);

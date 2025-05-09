@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.time.LocalDate;
 
 public class AjoutRdvController {
@@ -39,18 +40,48 @@ public class AjoutRdvController {
             String motif = motifField.getText();
             String statut = "planifie";
 
-
             LocalDate date = datePicker.getValue();
             String heure = heureCombo.getValue();
 
             if (date == null || heure == null || motif.isEmpty()) {
-                showAlert("Veuillez remplir tous les champs.");
+                showAlert("Please fill in all fields.");
                 return;
             }
 
-            String dateHeure = date + " " + heure; // ex : "2025-05-10 09:00"
+            // 💡 Vérifie que la date/heure est au moins 24h à l'avance
+            java.time.LocalDateTime selectedDateTime = date.atTime(
+                    Integer.parseInt(heure.split(":")[0]),
+                    Integer.parseInt(heure.split(":")[1])
+            );
+
+            if (selectedDateTime.isBefore(java.time.LocalDateTime.now().plusHours(24))) {
+                showAlert("Appointments must be scheduled at least 24 hours in advance.");
+                return;
+            }
+
+            String dateHeure = date + " " + heure; // exemple : "2025-05-10 09:00"
 
             Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+
+            // 🔍 Vérifier s'il y a déjà un RDV pour ce médecin à cette date/heure
+            String checkSql = "SELECT COUNT(*) FROM rendez_vous WHERE medecin_id = ? AND date_heure = ?";
+            PreparedStatement checkStmt = conn.prepareStatement(checkSql);
+            checkStmt.setInt(1, medecinId);
+            checkStmt.setString(2, dateHeure);
+
+            ResultSet rs = checkStmt.executeQuery();
+            rs.next();
+            int count = rs.getInt(1);
+            rs.close();
+            checkStmt.close();
+
+            if (count > 0) {
+                showAlert("This doctor already has an appointment at this time. Please choose a different time.");
+                conn.close();
+                return;
+            }
+
+            // ✅ Si libre, insérer le rendez-vous
             String sql = "INSERT INTO rendez_vous (patient_id, medecin_id, date_heure, motif, statut) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, patientId);
@@ -61,23 +92,23 @@ public class AjoutRdvController {
 
             int rows = stmt.executeUpdate();
             if (rows > 0) {
-                showAlert("Rendez-vous ajouté avec succès !");
+                showAlert("Appointment successfully added!");
                 if (rendezVousController != null) {
-                    rendezVousController.rafraichirTableau(); // Recharge automatiquement
+                    rendezVousController.rafraichirTableau();
                     rendezVousController.revenirVuePrincipale();
                 }
-
             }
 
             stmt.close();
             conn.close();
         } catch (NumberFormatException e) {
-            showAlert("L'ID du patient et du médecin doivent être des nombres.");
+            showAlert("Patient ID and Doctor ID must be numbers.");
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert("Erreur lors de l'ajout du rendez-vous.");
+            showAlert("Error while adding the appointment.");
         }
     }
+
 
     @FXML
     public void retour() {

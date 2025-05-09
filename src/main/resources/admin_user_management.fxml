@@ -4,7 +4,8 @@
 <?import javafx.geometry.*?>
 
 <BorderPane fx:id="rootAdminPane" fx:controller="AdminUserManagementController" xmlns:fx="http://javafx.com/fxml/1"
-            style="-fx-background-image: url('images/admine.jpg'); -fx-background-size: cover;" prefWidth="900" prefHeight="600">
+            style="-fx-background-image: url('images/admine.jpg'); -fx-background-size: cover;" prefWidth="750" prefHeight="600" stylesheets="@admin.css"
+>
     <top>
         <Label text="👤 Gestion des Utilisateurs"
                style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #003366;" BorderPane.alignment="CENTER"/>

@@ -45,4 +45,20 @@
                 "/>
     </HBox>
 
+    <!-- Espace pour pousser le bouton de retour en bas -->
+    <Region VBox.vgrow="ALWAYS" />
+
+    <!-- Bouton retour en bas à droite -->
+    <HBox alignment="BOTTOM_RIGHT">
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Retour" onAction="#returnToDashboard"
+                style="
+                    -fx-background-color: #64b5f6;
+                    -fx-text-fill: white;
+                    -fx-font-size: 14px;
+                    -fx-padding: 8px 20px;
+                    -fx-background-radius: 5px;
+                " />
+    </HBox>
+
 </VBox>

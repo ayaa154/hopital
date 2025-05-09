@@ -1,0 +1,106 @@
+/* -------- BACKGROUND & ROOT -------- */
+#rootAdminPane {
+    -fx-background-image: url("images/admine.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-font-family: 'Segoe UI', sans-serif;
+}
+
+/* -------- TITLE -------- */
+.label {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #003366;
+}
+
+/* -------- TABLE -------- */
+.table-view {
+    -fx-background-color: rgba(255, 255, 255, 0.95);
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.1, 0, 2);
+}
+
+.table-view .table-column {
+    -fx-alignment: CENTER-LEFT;
+}
+
+.table-view .table-cell {
+    -fx-font-size: 13px;
+    -fx-padding: 6 10 6 10;
+}
+
+/* -------- TABLE HEADER -------- */
+.table-view .column-header-background {
+    -fx-background-color: #2980b9; /* Couleur header bleue plus soutenue */
+    -fx-background-insets: 0;
+    -fx-background-radius: 8 8 0 0;
+    -fx-opacity: 1.0;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER;
+}
+
+/* -------- TABLE SELECTION -------- */
+.table-view .table-row-cell:selected {
+    -fx-background-color: #90caf9;
+    -fx-text-fill: black;
+}
+
+.table-view .table-cell:selected {
+    -fx-background-color: #90caf9;
+    -fx-text-fill: black;
+}
+
+/* -------- BUTTONS -------- */
+.button {
+    -fx-background-color: #2196f3;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-padding: 8 18;
+    -fx-cursor: hand;
+    -fx-font-size: 13px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 2, 0.1, 0, 1);
+}
+
+.button:hover {
+    -fx-background-color: #1e88e5;
+}
+
+.button:pressed {
+    -fx-background-color: #1565c0;
+}
+
+/* -------- DELETE BUTTON STYLE -------- */
+#deleteBtn {
+    -fx-background-color: #e53935;
+}
+
+#deleteBtn:hover {
+    -fx-background-color: #c62828;
+}
+
+/* -------- DISCONNECT BUTTON -------- */
+#seDeconnecter {
+    -fx-background-color: #6c757d;
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-font-weight: bold;
+    -fx-padding: 8 20;
+    -fx-font-size: 13px;
+}
+
+#seDeconnecter:hover {
+    -fx-background-color: #5a6268;
+}
